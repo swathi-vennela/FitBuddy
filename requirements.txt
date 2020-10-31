@@ -1,2 +1,11 @@
-Django
-django-crispy-tags
+asgiref==3.2.10
+beautifulsoup4==4.9.3
+Django==3.1.2
+django-crispy-forms==1.9.2
+mysqlclient==2.0.1
+protobuf==3.13.0
+PyMySQL==0.10.1
+pytz==2020.1
+six==1.15.0
+soupsieve==2.0.1
+sqlparse==0.4.1
