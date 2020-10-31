@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <link rel="icon" href="static/img/icon2.jpg">
+  <title>FITBUDDY</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <link href="static/css/layout.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body id="top">
+<div class="wrapper row0">
+  <div id="topbar" class="hoc clear">
+    <div class="fl_left">
+      <ul class="nospace">
+        <li><a href="/"><i class="fas fa-home"></i></a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'register' %}">Register</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+<div class="wrapper row1">
+  <header id="header" class="hoc clear"> 
+    <div id="logo" class="one_half first">
+      <h1 class="logoname"><a href="/"><span>Fit</span>Buddy</a></h1>
+    </div>
+
+<div class="one_half">
+  Fit Buddy is like a virtual trainer and nutritionist in one, with hundreds of workouts to tackle at home or at the gym, plus personalized meal plans and recipes.
+    All exercises feature clear instructions and videos, and progressive workout plans make this ideal for beginners or advanced lifters.
+
+</div>
+
+    </header>
+  <nav id="mainav" class="hoc clear">
+    <ul class="clear">
+      <li class="active"><a href="/">Home</a></li>
+      <li><a class="drop" href="#">Fitness Centres</a>
+        <ul>
+          <li><a href="#">first</a></li>
+          <li><a href="#">second</a></li>
+          <li><a href="#">third</a></li>
+          <li><a href="#">fourth</a></li>
+          <li><a href="#">fifth</a></li>
+          <li><a href="#">sixth</a></li>
+        </ul>
+      </li>
+      <li><a class="drop" href="#">Dropdown</a>
+        <ul>
+          <li><a href="#">Level 2</a></li>
+          <li><a class="drop" href="#">Level 2 + Drop</a>
+            <ul>
+              <li><a href="#">Level 3</a></li>
+              <li><a href="#">Level 3</a></li>
+              <li><a href="#">Level 3</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Level 2</a></li>
+        </ul>
+      </li>
+      <li><a href="#">about</a></li>
+      <li><a href="#">contact</a></li>
+      {% if request.user.is_authenticated %}
+            <li><a href="{% url 'logout' %}">logout</a></li>
+      {% else %}
+      <li><a href="{% url 'login' %}">login</a></li>
+      <li><a href="{% url 'register' %}">register</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+<div class="wrapper bgded overlay" style="background-image:url('static/img/fit2.png');">
+  <div id="pageintro" class="hoc clear">
+    <article>
+      <h3 class="heading">Fitness</h3>
+      is like a relationship.
+      you can't cheat and expect it to work.
+      <footer><a class="btn" href="#">join and be helathy</a></footer>
+    </article>
+  </div>
+</div>
+<div class="wrapper row3">
+  <main class="hoc container clear">
+    <div class="sectiontitle">
+      <h6 class="heading">Sessions in our program</h6>
+      <p>Enjoy the features and maintain good health</p>
+    </div>
+    <ul class="nospace group overview">
+      <li class="one_third">
+        <figure><a href="#"><img src="static/img/fit6.png" alt=""></a>
+          <figcaption>
+            <h6 class="heading">Fitness centres</h6>
+            <p>If you think lifting is dangerous, try being weak. Being weak is dangerous.</p>
+          </figcaption>
+        </figure>
+      </li>
+      <li class="one_third">
+        <figure><a href="#"><img src="static/img/fit7.png" alt=""></a>
+          <figcaption>
+            <h6 class="heading">Home workouts </h6>
+            <p>good health in your comfort zone</p>
+          </figcaption>
+        </figure>
+      </li>
+      <li class="one_third">
+        <figure><a href="#"><img src="static/img/fit8.png" alt=""></a>
+          <figcaption>
+            <h6 class="heading">Nutrition </h6>
+            <p>Food is an important part of a balanced diet.</p>
+          </figcaption>
+        </figure>
+      </li>
+    </ul>
+    <div class="clear"></div>
+  </main>
+</div>
+<div class="wrapper row2">
+  <section class="hoc container clear">
+    <div class="sectiontitle">
+      <h6 class="heading">Wanna know more about this</h6>
+      <p>It's good to start now</p>
+    </div>
+    <div class="group center">
+      <article class="one_third first"><a class="ringcon btmspace-50" href="#"><i class="fas fa-snowboarding"></i></a>
+        <h6 class="heading">Fitness centres</h6>
+        <p></p>
+      </article>
+      <article class="one_third"><a class="ringcon btmspace-50" href="#"><i class="fas fa-walking"></i></a>
+        <h6 class="heading">Home workouts</h6>
+        <p></p>
+      </article>
+      <article class="one_third"><a class="ringcon btmspace-50" href="#"><i class="fas fa-seedling"></i></a>
+        <h6 class="heading">Nutrition</h6>
+        <p></p>
+<!--        <p>Find fast facts on tens of thousands of foods, including your own recipes. Plus, the app lets you track your own meals, and it supplies a complete breakdown of your daily nutrition so you can make adjustments as needed.</p>-->
+      </article>
+    </div>
+  </section>
+</div>
+</body>
+</html>
