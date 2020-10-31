@@ -1,0 +1,33 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a program</title>
+</head>
+
+<body>
+                
+    <div style="width:40%;height: 70%;padding-top: 2%;margin-left: 30%;padding-bottom: 3%">
+      <form method="POST" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            {{ form.title|as_crispy_field }}
+            {{ form.category|as_crispy_field }}
+            {{ form.number_of_sessions|as_crispy_field }}
+            {{ form.hours_per_session|as_crispy_field }}
+            {{ form.description|as_crispy_field }}
+            {{ form.price|as_crispy_field }}
+            {{ form.image|as_crispy_field }}
+            <div class="form-group">
+                  <button class="btn btn-outline-info" type="submit" style="background-color: #008CBA">Upload</button>
+            </div>
+      </form>
+     </div> 
+            
+
+</body>
+
+</html>

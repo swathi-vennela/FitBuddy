@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.db import transaction
-from .models import User, Customer,FitnessCenter
+from .models import User, Customer,FitnessCenter, Program
 
 class CustomerRegistrationForm(UserCreationForm):
     email = forms.CharField(required=True)
@@ -36,4 +36,12 @@ class FitnessRegistrationForm(UserCreationForm):
         fitnesscenter.fitnesscenter_name=self.cleaned_data.get('fitnesscenter_name')
         fitnesscenter.contact_number=self.cleaned_data.get('contact_number')
         fitnesscenter.save()
-        return user      
+        return user 
+
+class ProgramForm(forms.ModelForm):
+    class Meta:
+        model = Program
+        fields = ("title","category","number_of_sessions","hours_per_session","price","description","image")
+         
+
+    
