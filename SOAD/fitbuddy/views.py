@@ -7,8 +7,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 
 # Create your views here
-def index(request):
-    return render(request,'fitbuddy/index.html')
+def index_view(request):
+    return render(request, "fitbuddy/home.html")
+# def index(request):
+#     return render(request,'fitbuddy/index.html')
 def register(request):
     return render(request,'fitbuddy/register.html')
 
