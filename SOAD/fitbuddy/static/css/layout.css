@@ -9,8 +9,13 @@ Licence URI: https://www.os-templates.com/template-terms
 File: Layout CSS
 */
 
-@import url("fontawesome-all.min.css");
+/*@import url("fontawesome-all.min.css");*/
 @import url("framework.css");
+
+$('.smooth-goto').on('click', function() {
+    $('html, body').animate({scrollTop: $(this.hash).offset().top - 50}, 1000);
+    return false;
+});
 
 /* Rows
 --------------------------------------------------------------------------------------------------------------- */

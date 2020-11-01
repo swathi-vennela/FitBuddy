@@ -17,7 +17,7 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
         <li><a href="{% url 'login' %}">Login</a></li>
-        <li><a href="{% url 'register' %}">Register</a></li>
+        <li><a href="#cr" class="smooth-goto">Register</a></li>
       </ul>
     </div>
 
@@ -139,6 +139,30 @@
 <!--        <p>Find fast facts on tens of thousands of foods, including your own recipes. Plus, the app lets you track your own meals, and it supplies a complete breakdown of your daily nutrition so you can make adjustments as needed.</p>-->
       </article>
     </div>
+  </section>
+</div>
+<div class="wrapper gradient">
+  <section id="testimonials" class="hoc container clear">
+    <!-- ################################################################################################ -->
+    <div class="sectiontitle">
+      <h6 id = "cr" class="heading">Registration</h6>
+    </div>
+    <article class="one_half first"><img src="static/img/c5.png" alt="">
+      <div class="card-body">
+                    <div class="row">
+                       <div class="col-lg-6">
+                        <a type="button" class="btn btn-block" href="{% url 'customer_register' %}">I am a customer</a>
+                       </div></div>
+                </div>
+    </article>
+    <article class="one_half"><img src="static/img/f1.jpg" alt="">
+      <div class="card-body">
+
+                       <div class="col-lg-6">
+                        <a type="button" class="btn btn-block" href="{% url 'fitness_register' %}">I am a fitness center</a>
+                       </div>
+                </div></article>
+    <!-- ################################################################################################ -->
   </section>
 </div>
 </body>
