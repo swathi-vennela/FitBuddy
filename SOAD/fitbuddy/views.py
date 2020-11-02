@@ -8,10 +8,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 from datetime import datetime
+from fitbuddy.decorators import *
 
 # Create your views here
 def index_view(request):
     return render(request, "fitbuddy/home.html")
+
+@login_required
+def profile_view(request):
+    return render(request, "fitbuddy/profile.html")
 
 # def index(request):
 #     return render(request,'fitbuddy/index.html')
@@ -21,6 +26,13 @@ def register(request):
 
 def view_programs(request):
     return render(request,'fitbuddy/program_list.html',context={'programs': Program.objects.all()})
+
+def program_detail(request, slug):
+    program = Program.objects.get(slug=slug)
+    context = {
+        "program" : program,
+    }
+    return render(request, 'fitbuddy/program_detail.html',context)
 
 class customer_register(CreateView):
     model = User
@@ -64,7 +76,7 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-@login_required
+@fitness_center_required
 def add_program(request):
     if request.method == "POST":
         form = ProgramForm(request.POST, request.FILES)
@@ -80,3 +92,17 @@ def add_program(request):
     else:
         form = ProgramForm()
     return render(request, 'fitbuddy/add_program.html',{"form":form})
+
+@fitness_center_required
+def edit_program(request, slug):    
+	program = Program.objects.get(slug=slug)
+	if request.method == "POST" and request.user == program.fcenter.user:
+		form = ProgramForm(request.POST, instance=program)
+		if form.is_valid():
+				data = form.save(commit=False)
+				data.save()
+				return redirect("program_detail", slug)
+	else:
+		form = ProgramForm(instance=program)
+	return render(request, 'fitbuddy/add_program.html', {"form": form})
+

@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>Fitness Programs</title>    
+</head>
+<body>
+    <div class="wrapper row0">
+        <div id="topbar" class="hoc clear">
+          <div class="fl_left">
+            
+              <a href="/">Back to home</a>
+            
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+          <div class="col-md-4 col-sm-4 col-lg-4 m-4">
+                  <div class="card">
+                    <img src="{{program.image.url}}" class="card-img-top" alt="{{ program.title }}" height="300" width="300">
+                          <div class="card-body">
+                            <h5 class="card-title"> {{ program.title }}</h5>
+                            <p><strong>Fitness Center:</strong> <a href="">{{ program.fcenter }}</a></p> 
+                            <p><strong>Program Description:</strong><br> {{ program.description }}</p>
+                            <p><strong>Number of sessions:</strong> {{ program.number_of_sessions }}</p>  
+                            <p><strong>Hours per session:</strong> {{ program.hours_per_session }}</p>
+                            <p class="card-text"><strong>Price :</strong> Rs{{ program.price }}</p>
+                            <p class="card-text"><strong>Category :</strong> {{program.category}}</p>
+                          </div>
+                      <div class='card-footer text-center'>
+                      <a href="#" class="btn btn-success">Enroll now</a>
+                      
+                      <!-- <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger">Remove from Cart</a> -->
+                      </div>
+                   </div>
+            </div>
+
+      </div>
+      </div>
+</body>
+</html>

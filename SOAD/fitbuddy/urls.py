@@ -13,6 +13,9 @@ urlpatterns=[
     path('fitness_register/',views.fitness_register.as_view(),name='fitness_register'),
     path('login/',views.login_view,name='login'),
     path('logout/',views.logout_view,name='logout'),
+    path('profile/', views.profile_view,name='profile'),
     path('add_program/',views.add_program, name='add_program'),
     path('list_programs/',views.view_programs, name='list_programs'),
+    path('program_detail/<slug>', views.program_detail, name = 'program_detail'),
+    path('edit_program/<slug>', views.edit_program, name='edit_program'),
 ]

@@ -16,8 +16,13 @@
         <li><a href="/"><i class="fas fa-home"></i></a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
-        <li><a href="{% url 'login' %}">Login</a></li>
-        <li><a href="{% url 'register' %}">Register</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'logout' %}">logout</a></li>
+        <li><a href="{%url 'profile' %}">Profile</a></li>
+        {% else %}
+        <li><a href="{% url 'login' %}">login</a></li>
+        <li><a href="{% url 'register' %}">register</a></li>
+        {% endif %}
       </ul>
     </div>
 
@@ -41,8 +46,8 @@
       <li class="active"><a href="/">Home</a></li>
       <li><a class="drop" href="#">Fitness Centres</a>
         <ul>
-          <li><a href="#">first</a></li>
-          <li><a href="#">second</a></li>
+          <li><a href="{% url 'list_programs' %}">Fitness programs around you</a></li>
+          <li><a href="{%url 'add_program' %}">Add a fitness program</a></li>
           <li><a href="#">third</a></li>
           <li><a href="#">fourth</a></li>
           <li><a href="#">fifth</a></li>
@@ -66,6 +71,7 @@
       <li><a href="#">contact</a></li>
       {% if request.user.is_authenticated %}
             <li><a href="{% url 'logout' %}">logout</a></li>
+            <li><a href="{%url 'profile' %}">Profile</a></li>
       {% else %}
       <li><a href="{% url 'login' %}">login</a></li>
       <li><a href="{% url 'register' %}">register</a></li>

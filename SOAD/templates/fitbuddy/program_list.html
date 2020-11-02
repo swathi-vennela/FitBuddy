@@ -18,7 +18,7 @@
                     <img src="{{object.image.url}}" class="card-img-top" alt="{{ object.title }}" height="300" width="300">
                           <div class="card-body">
                             <h5 class="card-title"> {{ object.title }}</h5>
-                            <a href="#">View Details</a>
+                            <a href="{{object.get_absolute_url}}">View Details</a>
                             <p class="card-text">{{ object.price }}</p>
                             <span class="badge purple mr-1"> {{object.category}} </span>
                           </div>
