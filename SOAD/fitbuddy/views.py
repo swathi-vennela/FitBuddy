@@ -11,8 +11,8 @@ def index_view(request):
     return render(request, "fitbuddy/home.html")
 # def index(request):
 #     return render(request,'fitbuddy/index.html')
-def register(request):
-    return render(request,'fitbuddy/register.html')
+# def register(request):
+#     return render(request,'fitbuddy/register.html')
 
 class customer_register(CreateView):
     model = User

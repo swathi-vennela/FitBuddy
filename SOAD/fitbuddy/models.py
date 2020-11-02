@@ -7,7 +7,7 @@ class User(AbstractUser):
     is_fitnesscenter = models.BooleanField(default=False)
 
 class Customer(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
 class FitnessCenter(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)

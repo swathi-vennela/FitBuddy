@@ -8,7 +8,9 @@ Licence: Free to use under our free template licence terms
 Licence URI: https://www.os-templates.com/template-terms
 File: Framework CSS
 */
-
+html {
+  scroll-behavior: smooth;
+}
 html{overflow-y:scroll; overflow-x:hidden;}
 html, body{margin:0; padding:0; font-size:14px; line-height:1.6em;}
 
