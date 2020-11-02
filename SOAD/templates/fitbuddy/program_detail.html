@@ -38,6 +38,7 @@
 
                       {% if request.user == program.fcenter.user %}
                       <a href=" {{ program.get_edit_program_url }} " class="btn btn-success">Edit details</a>
+                      <a href="{{ program.get_delete_program_url }}" class="btn btn-danger">Delete</a>
                       {% else %}
                       <a href="#" class="btn btn-success">Enroll now</a>
                       {% endif %}

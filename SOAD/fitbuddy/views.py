@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth import login,logout,authenticate
 from django.views.generic import CreateView
 from .models import User, Customer, FitnessCenter, Program
@@ -105,4 +105,13 @@ def edit_program(request, slug):
 	else:
 		form = ProgramForm(instance=program)
 	return render(request, 'fitbuddy/add_program.html', {"form": form})
+
+@fitness_center_required
+def delete_program(request, slug):
+    context = {}
+    program = get_object_or_404(Program, slug=slug)
+    if request.method == "POST" and request.user == program.fcenter.user :
+        program.delete()
+        return redirect("list_programs")
+    return render(request, 'fitbuddy/program_delete.html',context)
 

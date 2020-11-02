@@ -67,3 +67,8 @@ class Program(models.Model):
         return reverse("edit_program", kwargs={
             'slug' : self.slug
         })
+
+    def get_delete_program_url(self):
+        return reverse("delete_program", kwargs={
+            'slug' : self.slug
+        })

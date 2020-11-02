@@ -18,4 +18,5 @@ urlpatterns=[
     path('list_programs/',views.view_programs, name='list_programs'),
     path('program_detail/<slug>', views.program_detail, name = 'program_detail'),
     path('edit_program/<slug>', views.edit_program, name='edit_program'),
+    path('delete_program/<slug>', views.delete_program, name='delete_program'),
 ]
