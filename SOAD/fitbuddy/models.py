@@ -24,12 +24,14 @@ class FitnessCenter(models.Model):
 
 class Program(models.Model):
 
-    WEIGHTLOSS = 'WL'
-    WEIGHTGAIN = 'WG'
-    BODYBUILDING = 'AB'
-    REGULAR = 'RG'
-    DANCE = 'DC'
-    YOGA = 'YG'
+    WEIGHTLOSS = 'Weight Loss'
+    WEIGHTGAIN = 'Weight Gain'
+    BODYBUILDING = 'Body Building'
+    REGULAR = 'Regular'
+    DANCE = 'Dance'
+    YOGA = 'Yoga'
+    PHYSIOTHERAPY = 'Physiotherapy'
+    MASSAGETHERAPY = 'Massage Therapy'
     
     CATEGORY_CHOICES = [
         (WEIGHTLOSS, 'Weightloss'),
@@ -38,11 +40,13 @@ class Program(models.Model):
         (REGULAR, 'Regular'),
         (DANCE, 'Dance'),
         (YOGA, 'Yoga'),
+        (PHYSIOTHERAPY, 'Physiotherapy'),
+        (MASSAGETHERAPY, 'MassageTherapy'),
     ]
 
     fcenter = models.ForeignKey(FitnessCenter,on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    category = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=REGULAR,)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default=REGULAR,)
     number_of_sessions = models.IntegerField()
     hours_per_session = models.FloatField()
     price = models.FloatField()
@@ -56,5 +60,10 @@ class Program(models.Model):
 
     def get_absolute_url(self):
         return reverse("program_detail",kwargs={
+            'slug' : self.slug
+        })
+
+    def get_edit_program_url(self):
+        return reverse("edit_program", kwargs={
             'slug' : self.slug
         })

@@ -27,7 +27,7 @@
                     <img src="{{program.image.url}}" class="card-img-top" alt="{{ program.title }}" height="300" width="300">
                           <div class="card-body">
                             <h5 class="card-title"> {{ program.title }}</h5>
-                            <p><strong>Fitness Center:</strong> <a href="">{{ program.fcenter }}</a></p> 
+                            <p><strong>Fitness Center:</strong> <a href="#">{{ program.fcenter }}</a></p> 
                             <p><strong>Program Description:</strong><br> {{ program.description }}</p>
                             <p><strong>Number of sessions:</strong> {{ program.number_of_sessions }}</p>  
                             <p><strong>Hours per session:</strong> {{ program.hours_per_session }}</p>
@@ -35,7 +35,13 @@
                             <p class="card-text"><strong>Category :</strong> {{program.category}}</p>
                           </div>
                       <div class='card-footer text-center'>
+
+                      {% if request.user == program.fcenter.user %}
+                      <a href=" {{ program.get_edit_program_url }} " class="btn btn-success">Edit details</a>
+                      {% else %}
                       <a href="#" class="btn btn-success">Enroll now</a>
+                      {% endif %}
+
                       
                       <!-- <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger">Remove from Cart</a> -->
                       </div>
