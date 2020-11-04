@@ -26,8 +26,8 @@ def profile_view(request):
 # def index(request):
 #     return render(request,'fitbuddy/index.html')
 
-def register(request):
-    return render(request,'fitbuddy/register.html')
+# def register(request):
+#     return render(request,'fitbuddy/register.html')
 
 def view_programs(request):
     return render(request,'fitbuddy/program_list.html',context={'programs': Program.objects.all()})
