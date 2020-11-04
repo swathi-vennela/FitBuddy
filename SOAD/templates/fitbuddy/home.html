@@ -1,15 +1,43 @@
 <!DOCTYPE html>
 <html lang="">
 <head>
-  <link rel="icon" href="static/img/sun.png">
+  <link rel="icon" href="static/img/log.png">
   <title> FITBUDDY</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+$(document).ready(function(){
+  // Add smooth scrolling to all links
+  $("a").on('click', function(event) {
+
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 800, function(){
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    } // End if
+  });
+});
+</script>
   <link href="static/css/layout.css" rel="stylesheet" type="text/css" media="all">
   <style>
     body{
-      font-family: 'Poppins'; 
+      font-family: 'Poppins';
     }
   </style>
 </head>
@@ -26,7 +54,7 @@
         <li><a href="{%url 'profile' %}">Profile</a></li>
         {% else %}
         <li><a href="{% url 'login' %}">login</a></li>
-        <li><a href="{% url 'register' %}">register</a></li>
+                <li><a href="#register" class="smooth-goto">Register</a></li>
         {% endif %}
       </ul>
     </div>
@@ -34,7 +62,7 @@
   </div>
 </div>
 <div class="wrapper row1">
-  <header id="header" class="hoc clear"> 
+  <header id="header" class="hoc clear">
     <div id="logo" class="one_half first">
       <h1 class="logoname"; style="font-family: MinecrafterReg" ><a href="/"><span>Fit</span>Buddy</a></h1>
     </div>
@@ -79,7 +107,7 @@
             <li><a href="{%url 'profile' %}">Profile</a></li>
       {% else %}
       <li><a href="{% url 'login' %}">login</a></li>
-      <li><a href="{% url 'register' %}">register</a></li>
+            <li><a href="#register" class="smooth-goto">register</a></li>
       {% endif %}
     </ul>
   </nav>
@@ -150,6 +178,28 @@
 <!--        <p>Find fast facts on tens of thousands of foods, including your own recipes. Plus, the app lets you track your own meals, and it supplies a complete breakdown of your daily nutrition so you can make adjustments as needed.</p>-->
       </article>
     </div>
+  </section>
+</div>
+<div class="wrapper gradient">
+  <section id="testimonials" class="hoc container clear">
+    <div class="sectiontitle">
+      <h6 id = "register" class="heading">Registration</h6>
+    </div>
+    <article class="one_half first"><img src="static/img/c5.png" alt="">
+      <div class="card-body">
+                    <div class="row">
+                       <div class="col-lg-6">
+                        <a type="button" class="btn btn-block" href="{% url 'customer_register' %}">Resgister as customer</a>
+                       </div></div>
+                </div>
+    </article>
+    <article class="one_half"><img src="static/img/f1.jpg" alt="">
+      <div class="card-body">
+
+                       <div class="col-lg-6">
+                        <a type="button" class="btn btn-block" href="{% url 'fitness_register' %}">Resgister as fitness center</a>
+                       </div>
+                </div></article>
   </section>
 </div>
 <div class="wrapper row2">
