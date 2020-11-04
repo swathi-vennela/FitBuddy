@@ -48,7 +48,7 @@
         <ul>
           <li><a href="{% url 'list_programs' %}">Fitness programs around you</a></li>
           <li><a href="{%url 'add_program' %}">Add a fitness program</a></li>
-          <li><a href="#">third</a></li>
+          <li><a href="#">list all fitness centres</a></li>
           <li><a href="#">fourth</a></li>
           <li><a href="#">fifth</a></li>
           <li><a href="#">sixth</a></li>
@@ -145,6 +145,34 @@
 <!--        <p>Find fast facts on tens of thousands of foods, including your own recipes. Plus, the app lets you track your own meals, and it supplies a complete breakdown of your daily nutrition so you can make adjustments as needed.</p>-->
       </article>
     </div>
+  </section>
+</div>
+
+
+<div class="wrapper row2">
+  <section id="latest" class="hoc container clear">
+    <div class="sectiontitle">
+      <h6 class="heading">List of all fitness centres</h6>
+    </div>
+    <ul class="nospace group">
+  {% for display in fit_center %}
+      <li class="one_third ">
+        <article></figure>
+          <div class="excerpt">
+            <h6 class="heading">name: {{ display.fitnesscenter_name }}</h6>
+            <th>email us : {{ display.email }}</th><br>
+                      <th>user:{{ display.user }} </th><br>
+                      <th>contact us: {{ display.contact_number }} </th>
+            <ul class="nospace meta">
+              <li> <a href="#">Reviews</a></li>
+            </ul>
+            <footer><a class="btn" href="#">Learn more </a></footer>
+          </div>
+        </article>
+      </li>
+{% endfor %}
+
+    </ul>
   </section>
 </div>
 </body>

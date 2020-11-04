@@ -1,5 +1,4 @@
-{% load static %}
-{% load crispy_forms_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +9,8 @@
 </head>
 
 <body>
-                
+      {% load static %}
+{% load crispy_forms_tags %}
     <div style="width:40%;height: 70%;padding-top: 2%;margin-left: 30%;padding-bottom: 3%">
       <form method="POST" enctype="multipart/form-data"> 
             {% csrf_token %}

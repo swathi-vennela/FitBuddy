@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth import login,logout,authenticate
 from django.views.generic import CreateView
-from .models import User, Customer, FitnessCenter, Program
+from .models import User, Customer, FitnessCenter, Program,Profile
 from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -12,11 +12,22 @@ from fitbuddy.decorators import *
 
 # Create your views here
 def index_view(request):
-    return render(request, "fitbuddy/home.html")
+    list = {}
+    fit_center = FitnessCenter.objects.all()
+    list["fit_center"] = fit_center
+    context = {'fit_center':fit_center}
+    return render(request, "fitbuddy/home.html",context=context)
 
 @login_required
 def profile_view(request):
-    return render(request, "fitbuddy/profile.html")
+    prog ={}
+    programs = Program.objects.all()
+    prog["programs"] = programs
+    prof = {}
+    profiles = Profile.objects.all()
+    prof["profiles"] = profiles
+    context ={'programs':programs,'profiles':profiles}
+    return render(request, "fitbuddy/profile.html",context=context)
 
 # def index(request):
 #     return render(request,'fitbuddy/index.html')

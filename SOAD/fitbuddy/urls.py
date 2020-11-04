@@ -19,4 +19,5 @@ urlpatterns=[
     path('program_detail/<slug>', views.program_detail, name = 'program_detail'),
     path('edit_program/<slug>', views.edit_program, name='edit_program'),
     path('delete_program/<slug>', views.delete_program, name='delete_program'),
+    # path('list_all_fitness_centres/')
 ]

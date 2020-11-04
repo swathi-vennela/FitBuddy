@@ -4,7 +4,7 @@ from django.db import transaction
 from .models import User, Customer,FitnessCenter, Program
 
 class CustomerRegistrationForm(UserCreationForm):
-    email = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
     class Meta(UserCreationForm.Meta):
         model = User
     
@@ -20,7 +20,7 @@ class CustomerRegistrationForm(UserCreationForm):
 
 
 class FitnessRegistrationForm(UserCreationForm):
-    email = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
     fitnesscenter_name = forms.CharField(required=True)
     contact_number = forms.CharField(required=True)
     class Meta(UserCreationForm.Meta):
@@ -35,6 +35,7 @@ class FitnessRegistrationForm(UserCreationForm):
         fitnesscenter = FitnessCenter.objects.create(user=user)
         fitnesscenter.fitnesscenter_name=self.cleaned_data.get('fitnesscenter_name')
         fitnesscenter.contact_number=self.cleaned_data.get('contact_number')
+        fitnesscenter.email=self.cleaned_data.get('email')
         fitnesscenter.save()
         return user 
 
@@ -42,6 +43,7 @@ class ProgramForm(forms.ModelForm):
     class Meta:
         model = Program
         fields = ("title","category","number_of_sessions","hours_per_session","price","description","image")
+
          
 
     

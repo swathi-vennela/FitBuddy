@@ -1,4 +1,3 @@
-{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +9,7 @@
     <title>User Profile</title>
 </head>
 <body>
+{% load crispy_forms_tags %}
 
     <section>
         <div class="container">
@@ -24,17 +24,60 @@
                     <h2>Hi {{ request.user.username }} </h2>
                     <br> <br>
                     {% if request.user.is_fitnesscenter %}
-                    <strong>Logged in as a fitness center</strong> 
+                    <strong>Logged in as a fitness center</strong>
+
                     {% else %}
                     <strong>Logged in as a customer </strong>
-                    {% endif %}
+                    {% for display in profiles %}
+
+        <tr>
+            {% if display.user == request.user.username %}
+
+            <th>{{ display.email }}</th>
+            <th>{{ display.user }}</th>
+            <br>
+
+        </tr>
+  {% endif %}
+
+                          {% endfor %}
+  {% endif %}
                  </div>
                     </div>   
                 </div>
               </div>
             </div>
-        </div>
       </section>
+{% if request.user.is_fitnesscenter %}
+
+<div class="container">
+
+        <div class="row">
+          {% for object in programs %}
+                                  {% if request.user == object.fcenter.user %}
+
+          <div class="col-md-4 col-sm-4 col-lg-4 m-4">
+                  <div class="card">
+                    <img src="{{object.image.url}}" class="card-img-top" alt="{{ object.title }}" height="300" width="300">
+                          <div class="card-body">
+                            <h5 class="card-title"> {{ object.title }}</h5>
+                            <a href="{{object.get_absolute_url}}">View Details</a>
+                            <p class="card-text">{{ object.price }}</p>
+                            <span class="badge purple mr-1"> {{object.category}} </span>
+                          </div>
+                      <!-- <div class='card-footer text-center'>
+                      <a href="{{ object.get_add_to_cart_url }}" class="btn btn-success">Add to Cart</a>
+                      <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger">Remove from Cart</a>
+                      </div> -->
+                   </div>
+            </div>{% endif %}
+
+          {% endfor %}
+
+      </div>
+      </div>
+{% endif %}
+
 
 </body>
 </html>

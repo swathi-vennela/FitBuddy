@@ -1,13 +1,34 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from PIL import Image
+
 from django.urls import reverse
+from django.conf import settings
 
 # Create your models here.
 class User(AbstractUser):
+
     email = models.EmailField()
     is_customer = models.BooleanField(default=False)
     is_fitnesscenter = models.BooleanField(default=False)
+class Profile(models.Model):
+    email = models.EmailField(default="")
 
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.png', upload_to='profile_pics')
+
+    def __str__(self):
+        return self.user.username
+
+    def save(self, *args, **kwargs):
+        super(Profile, self).save(*args, **kwargs)
+
+        img = Image.open(self.image.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
  
@@ -18,9 +39,16 @@ class FitnessCenter(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     fitnesscenter_name = models.CharField(max_length=30)
     contact_number = models.CharField(max_length=10)
-
+    email = models.EmailField()
     def __str__(self):
         return self.fitnesscenter_name
+
+# class listfc(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+#     fitnesscenter_name = models.CharField(max_length=30)
+#     contact_number = models.CharField(max_length=10)
+#     email = models.EmailField(default="")
+
 
 class Program(models.Model):
 
