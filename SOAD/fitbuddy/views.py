@@ -12,7 +12,12 @@ from fitbuddy.decorators import *
 
 # Create your views here
 def index_view(request):
-    return render(request, "fitbuddy/home.html")
+    list={}
+    fitcenter = FitnessCenter.objects.all()
+    list["fitcenter"] = fitcenter
+    context = {"fitcenter":fitcenter}
+    return render(request, "fitbuddy/home.html",context=context)
+
 
 @login_required
 def profile_view(request):
