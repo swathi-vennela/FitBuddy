@@ -152,5 +152,31 @@
     </div>
   </section>
 </div>
+<div class="wrapper row2">
+  <section id="latest" class="hoc container clear">
+    <div class="sectiontitle">
+      <h6 class="heading">List of all fitness centres</h6>
+    </div>
+    <ul class="nospace group">
+  {% for display in fitcenter %}
+      <li class="one_third ">
+        <article></figure>
+          <div class="excerpt">
+            <h6 class="heading">name: {{ display.fitnesscenter_name }}</h6>
+            <th>email us : {{ display.email }}</th><br>
+                      <th>user:{{ display.user }} </th><br>
+                      <th>contact us: {{ display.contact_number }} </th>
+            <ul class="nospace meta">
+              <li> <a href="#">Reviews</a></li>
+            </ul>
+            <footer><a class="btn" href="#">Learn more </a></footer>
+          </div>
+        </article>
+      </li>
+{% endfor %}
+
+    </ul>
+  </section>
+</div>
 </body>
 </html>

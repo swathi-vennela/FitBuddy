@@ -35,6 +35,7 @@ class FitnessRegistrationForm(UserCreationForm):
         fitnesscenter = FitnessCenter.objects.create(user=user)
         fitnesscenter.fitnesscenter_name=self.cleaned_data.get('fitnesscenter_name')
         fitnesscenter.contact_number=self.cleaned_data.get('contact_number')
+        fitnesscenter.email=self.cleaned_data.get('email')
         fitnesscenter.save()
         return user 
 
