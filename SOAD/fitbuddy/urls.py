@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.conf.urls import url
 
 #app_name = 'fitbuddy'
 
@@ -19,4 +20,9 @@ urlpatterns=[
     path('program_detail/<slug>', views.program_detail, name = 'program_detail'),
     path('edit_program/<slug>', views.edit_program, name='edit_program'),
     path('delete_program/<slug>', views.delete_program, name='delete_program'),
+    url(r'^results-programs/$',views.search_programs,name='search_programs'),
+    path('pricerange1/',views.pricerange1,name='pricerange1'),
+    path('pricerange2/',views.pricerange2,name='pricerange2'),
+    path('pricerange3/',views.pricerange3,name='pricerange3'),
+    path('pricerange4/',views.pricerange4,name='pricerange4'),
 ]

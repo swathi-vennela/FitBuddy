@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import datetime
 from fitbuddy.decorators import *
+from django.db.models import Q 
 
 # Create your views here
 def index_view(request):
@@ -115,3 +116,42 @@ def delete_program(request, slug):
         return redirect("list_programs")
     return render(request, 'fitbuddy/program_delete.html',context)
 
+def search_programs(request):
+    query=request.GET.get('q1')
+    if query:
+        all_programs=Program.objects.all()
+        results=all_programs.filter(Q(title__icontains=query)|Q(category__icontains=query))
+    else:
+        results=Program.objects.all()
+    context={
+        'programs' : results
+    }
+    return render(request,'fitbuddy/program_list.html',context)
+
+def pricerange1(request):
+	programs = Program.objects.filter(price__range=(0,1500))
+	context={
+		'programs' : programs
+	}
+	return render(request,'fitbuddy/program_list.html',context)	
+
+def pricerange2(request):
+	programs = Program.objects.filter(price__range=(1500,3000))
+	context={
+		'programs' : programs
+	}
+	return render(request,'fitbuddy/program_list.html',context)	
+
+def pricerange3(request):
+	programs = Program.objects.filter(price__range=(3000,5000))
+	context={
+		'programs' : programs
+	}
+	return render(request,'fitbuddy/program_list.html',context)	
+
+def pricerange4(request):
+	programs = Program.objects.filter(price__range=(5000,10000))
+	context={
+		'programs' : programs
+	}
+	return render(request,'fitbuddy/program_list.html',context)	
