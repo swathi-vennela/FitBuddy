@@ -25,4 +25,7 @@ urlpatterns=[
     path('pricerange2/',views.pricerange2,name='pricerange2'),
     path('pricerange3/',views.pricerange3,name='pricerange3'),
     path('pricerange4/',views.pricerange4,name='pricerange4'),
+    path('addreview/<slug>', views.add_review, name="add_review"),
+    path('editreview/<program_slug>/<review_slug>/', views.edit_review, name="edit_review"),
+    path('deletereview/<program_slug>/<review_slug>/', views.delete_review, name="delete_review"),
 ]

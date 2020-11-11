@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth import login,logout,authenticate
 from django.views.generic import CreateView
-from .models import User, Customer, FitnessCenter, Program
-from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm
+from .models import User, Customer, FitnessCenter, Program, Review
+from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm, ReviewForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -10,6 +10,7 @@ from django.utils import timezone
 from datetime import datetime
 from fitbuddy.decorators import *
 from django.db.models import Q 
+from django.db.models import Avg
 
 # Create your views here
 def index_view(request):
@@ -35,8 +36,15 @@ def view_programs(request):
 
 def program_detail(request, slug):
     program = Program.objects.get(slug=slug)
+    reviews = Review.objects.filter(program=program).order_by("-comment")
+    average = reviews.aggregate(Avg("rating"))["rating__avg"]
+    if average == None:
+        average = 0
+    average = round(average, 2)
     context = {
         "program" : program,
+        'reviews' : reviews,
+        "average": average
     }
     return render(request, 'fitbuddy/program_detail.html',context)
 
@@ -160,3 +168,66 @@ def pricerange4(request):
 		'programs' : programs
 	}
 	return render(request,'fitbuddy/program_list.html',context)	
+
+def add_review(request, slug):
+    if request.user.is_authenticated:
+        program = Program.objects.get(slug=slug)
+        if request.method == "POST":
+            form = ReviewForm(request.POST or None)
+            if form.is_valid():
+                data = form.save(commit=False)
+                data.comment = request.POST["comment"]
+                data.rating = request.POST["rating"]
+                data.user = request.user
+                data.program = program
+                data.slug = datetime.now().strftime("%c")
+                data.save()
+                return redirect("program_detail", slug)
+        else:
+            form = ReviewForm()
+        return render(request, 'fitbuddy/program_detail.html', {"form": form})
+    else:
+        return redirect("fitbuddy/login.html")
+
+def edit_review(request, program_slug, review_slug):
+    if request.user.is_authenticated:
+        program = Program.objects.get(slug=program_slug)
+        # review
+        review = Review.objects.get(program=program, slug=review_slug)
+
+        # check if the review was done by the logged in user
+        if request.user == review.user:
+            # grant permission
+            if request.method == "POST":
+                form = ReviewForm(request.POST, instance=review)
+                if form.is_valid():
+                    data = form.save(commit=False)
+                    if (data.rating > 10) or (data.rating < 0):
+                         error = "Out or range. Please select rating from 0 to 10."
+                         return render(request, 'fitbuddy/edit_review.html', {"error": error, "form": form})
+                    else:
+                        data.save()
+                        return redirect("program_detail", program_slug)
+            else:
+                form = ReviewForm(instance=review)
+            return render(request, 'fitbuddy/edit_review.html', {"form": form})
+        else:
+            return redirect("program_detail", program_slug)
+    else:
+        return redirect("login")
+
+def delete_review(request, program_slug, review_slug):
+    if request.user.is_authenticated:
+        program = Program.objects.get(slug=program_slug)
+        # review
+        review = Review.objects.get(program=program, slug=review_slug)
+
+        # check if the review was done by the logged in user
+        if request.user == review.user:
+            # grant permission to delete
+            review.delete()
+
+        return redirect("program_detail", program_slug)
+            
+    else:
+        return redirect("login")

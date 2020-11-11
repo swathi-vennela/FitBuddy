@@ -74,3 +74,13 @@ class Program(models.Model):
         return reverse("delete_program", kwargs={
             'slug' : self.slug
         })
+
+class Review(models.Model):
+    program = models.ForeignKey(Program, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.TextField(max_length=5000)
+    rating = models.FloatField(default=0)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.user.username
