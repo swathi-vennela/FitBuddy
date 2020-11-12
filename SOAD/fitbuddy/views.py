@@ -10,7 +10,7 @@ from django.utils import timezone
 from datetime import datetime
 from fitbuddy.decorators import *
 from django.db.models import Q 
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -44,13 +44,15 @@ def program_detail(request, slug):
     program = Program.objects.get(slug=slug)
     reviews = Review.objects.filter(program=program).order_by("-comment")
     average = reviews.aggregate(Avg("rating"))["rating__avg"]
+    count = reviews.count()
     if average == None:
         average = 0
     average = round(average, 2)
     context = {
         "program" : program,
         'reviews' : reviews,
-        "average": average
+        "average": average,
+        "count" : count
     }
     return render(request, 'fitbuddy/program_detail.html',context)
 
