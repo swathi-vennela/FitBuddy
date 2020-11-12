@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Program, Review
+from .models import Program, Review, HiringRole
 
 class ReviewSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
@@ -14,4 +14,10 @@ class ProgramSerializer(serializers.ModelSerializer):
     class Meta:
         model = Program
         fields=('id','title','category','number_of_sessions','hours_per_session','price','description','image','fitnesscenter_name','reviews')
+
+class HiringRoleSerializer(serializers.ModelSerializer):
+    fprogram_name = serializers.CharField(source='fprogram.title')
+    class Meta:
+        model = HiringRole
+        fields=('fprogram_name','role','title','salary','qualifications','responsibilities','gender','contact_email','slug')
 

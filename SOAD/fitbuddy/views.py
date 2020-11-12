@@ -15,8 +15,9 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ProgramSerializer, ReviewSerializer
+from .serializers import *
 from rest_framework.decorators import api_view
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here
 def index_view(request):
@@ -136,6 +137,16 @@ def add_hiring_role(request,slug):
 
 def list_hiring_roles(request):
     return render(request, 'fitbuddy/hiring_list.html', context={'roles':HiringRole.objects.all()})
+
+@api_view(http_method_names=['GET',])
+def hiring_list_api_get(request):
+    try:
+        data = HiringRole.objects.all()
+        serializer = HiringRoleSerializer(data,many=True)
+        return Response(data=serializer.data)
+    except ObjectDoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 def job_detail(request, slug):
     job = HiringRole.objects.get(slug=slug)

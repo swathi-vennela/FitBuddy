@@ -35,4 +35,5 @@ urlpatterns=[
     path('list_hiring_roles/',views.list_hiring_roles, name='list_hiring_roles'),
     path('job_detail/<slug>/',views.job_detail, name='job_detail'),
     path('reviews/<slug>',views.reviewlist,name='reviews'),
+    path('get_hiring_list/',views.hiring_list_api_get,name='get_hiring_list_api'),
 ]
