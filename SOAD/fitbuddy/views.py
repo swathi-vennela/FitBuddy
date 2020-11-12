@@ -11,6 +11,12 @@ from datetime import datetime
 from fitbuddy.decorators import *
 from django.db.models import Q 
 from django.db.models import Avg
+from django.http import HttpResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ProgramSerializer
+from rest_framework.decorators import api_view
 
 # Create your views here
 def index_view(request):
@@ -231,3 +237,33 @@ def delete_review(request, program_slug, review_slug):
             
     else:
         return redirect("login")
+
+@api_view(['GET'])
+def programlist(request):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        programs = Program.objects.all()
+    except programs.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer=ProgramSerializer(programs,many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def programlistbyid(request,id):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        user=User.objects.get(id=id)
+        fcenters=FitnessCenter.objects.get(user=user)
+        programs=Program.objects.filter(fcenter=fcenters)
+    except programs.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer=ProgramSerializer(programs,many=True)
+        return Response(serializer.data)    
