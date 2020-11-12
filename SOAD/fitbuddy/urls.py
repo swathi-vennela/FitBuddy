@@ -29,4 +29,5 @@ urlpatterns=[
     path('editreview/<program_slug>/<review_slug>/', views.edit_review, name="edit_review"),
     path('deletereview/<program_slug>/<review_slug>/', views.delete_review, name="delete_review"),
     path('add_hiring_role/<slug>',views.add_hiring_role, name='add_hiring_role'),
+    path('list_hiring_roles/',views.list_hiring_roles, name='list_hiring_roles'),
 ]
