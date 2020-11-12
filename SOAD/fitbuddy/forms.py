@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.db import transaction
-from .models import User, Customer,FitnessCenter, Program, Review
+from .models import User, Customer,FitnessCenter, Program, Review, HiringRole
 
 class CustomerRegistrationForm(UserCreationForm):
     email = forms.CharField(required=True)
@@ -39,11 +39,16 @@ class FitnessRegistrationForm(UserCreationForm):
         fitnesscenter.save()
         return user 
 
+class HiringRoleForm(forms.ModelForm):
+    class Meta:
+        model = HiringRole
+        fields = ("title","role","salary","qualifications","responsibilities","gender")
+
 class ProgramForm(forms.ModelForm):
     class Meta:
         model = Program
         fields = ("title","category","number_of_sessions","hours_per_session","price","description","image")
-         
+       
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review

@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect, get_object_or_404, HttpResponseRed
 from django.contrib.auth import login,logout,authenticate
 from django.views.generic import CreateView
 from .models import User, Customer, FitnessCenter, Program, Review
-from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm, ReviewForm
+from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm, ReviewForm, HiringRoleForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -11,6 +11,12 @@ from datetime import datetime
 from fitbuddy.decorators import *
 from django.db.models import Q 
 from django.db.models import Avg
+from django.http import HttpResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ProgramSerializer
+from rest_framework.decorators import api_view
 
 # Create your views here
 def index_view(request):
@@ -106,6 +112,24 @@ def add_program(request):
     else:
         form = ProgramForm()
     return render(request, 'fitbuddy/add_program.html',{"form":form})
+
+            
+@fitness_center_required
+def add_hiring_role(request,slug):
+    program = Program.objects.get(slug = slug)
+    if request.method == "POST" and request.user == program.fcenter.user:
+        form = HiringRoleForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.contact_email = program.fcenter.email
+            data.fprogram = program
+            data.slug = datetime.now().strftime("%c")
+            data.save()
+            return redirect("program_detail",slug)
+    else:
+        form = HiringRoleForm()
+    return render(request, 'fitbuddy/add_hiring_role.html',{"form":form})
 
 @fitness_center_required
 def edit_program(request, slug):    
@@ -231,3 +255,33 @@ def delete_review(request, program_slug, review_slug):
             
     else:
         return redirect("login")
+
+@api_view(['GET'])
+def programlist(request):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        programs = Program.objects.all()
+    except programs.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer=ProgramSerializer(programs,many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def programlistbyid(request,id):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        user=User.objects.get(id=id)
+        fcenters=FitnessCenter.objects.get(user=user)
+        programs=Program.objects.filter(fcenter=fcenters)
+    except programs.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer=ProgramSerializer(programs,many=True)
+        return Response(serializer.data)    

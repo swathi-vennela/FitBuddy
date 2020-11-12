@@ -15,7 +15,7 @@ class Customer(models.Model):
         return self.user.username
 
 class FitnessCenter(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
     fitnesscenter_name = models.CharField(max_length=30)
     contact_number = models.CharField(max_length=10)
     email = models.EmailField(default = "")
@@ -70,10 +70,59 @@ class Program(models.Model):
             'slug' : self.slug
         })
 
+    def get_add_hiring_role_url(self):
+        return reverse("add_hiring_role", kwargs={
+            'slug' : self.slug
+        })
+
     def get_delete_program_url(self):
         return reverse("delete_program", kwargs={
             'slug' : self.slug
         })
+
+class HiringRole(models.Model):
+
+    GYMTRAINER = 'Gym Trainer'
+    GYMINSTRUCTOR = 'Gym Instructor'
+    PERSONALTRAINER = 'Personal Trainer'
+    FRONTDESKSTAFF = 'Front desk staff'
+    SALESMANAGER = 'Sales Manager'
+    NUTRITIONIST = 'Fitness Nutritionist'
+    OTHER = 'Other'
+    
+    MALE = 'Male'
+    FEMALE = 'Female'
+    ANY = 'Any'
+
+    ROLE_CHOICES = [
+        (GYMTRAINER, 'GymTrainer'),
+        (GYMINSTRUCTOR, 'GymInstructor'),
+        (PERSONALTRAINER, 'PersonalTrainer'),
+        (FRONTDESKSTAFF, 'FrontDeskStaff'),
+        (SALESMANAGER, 'SalesManager'),
+        (NUTRITIONIST, 'Nutritionist'),
+        (OTHER, 'Other'),
+    ]
+
+    GENDER_CHOICES = [
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+        (ANY, 'Any'),
+    ]
+
+    fprogram = models.ForeignKey(Program,on_delete=models.CASCADE)
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES, default=OTHER)
+    title = models.CharField(max_length=200)
+    salary = models.FloatField()
+    qualifications = models.TextField()
+    responsibilities = models.TextField()
+    gender = models.CharField(max_length=30, choices=GENDER_CHOICES, default=ANY)
+    contact_email = models.EmailField(default="")
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.title 
+
 
 class Review(models.Model):
     program = models.ForeignKey(Program, on_delete=models.CASCADE)
