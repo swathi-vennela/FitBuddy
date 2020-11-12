@@ -30,7 +30,7 @@
                   <div class="card" >
                           <div class="card-body">
                             <h5 class="card-title"> {{ job.title }}</h5>
-                            <p><strong>Fitness Program:</strong> <a href="#">{{ job.fprogram }}</a></p> 
+                            <p><strong>Fitness Program:</strong> <a href="{{job.fprogram.get_absolute_url}}">{{ job.fprogram }}</a></p> 
                             <p><strong>Role:</strong><br> {{ job.role }}</p>
                             <p><strong>Eligibility:</strong> {{ job.qualifications }}</p>  
                             <p><strong>Responsibilities:</strong> {{ job.responsibilities }}</p>
