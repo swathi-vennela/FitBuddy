@@ -30,5 +30,6 @@ urlpatterns=[
     path('editreview/<program_slug>/<review_slug>/', views.edit_review, name="edit_review"),
     path('deletereview/<program_slug>/<review_slug>/', views.delete_review, name="delete_review"),
     path('programs/',views.programlist,name='programs'),
-    path('programs/<int:id>',views.programlistbyid,name='programs1')
+    path('programs/<int:id>',views.programlistbyid,name='programs1'),
+    path('add_hiring_role/<slug>',views.add_hiring_role, name='add_hiring_role'),
 ]
