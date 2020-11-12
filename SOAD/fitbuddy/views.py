@@ -15,7 +15,7 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ProgramSerializer
+from .serializers import ProgramSerializer, ReviewSerializer
 from rest_framework.decorators import api_view
 
 # Create your views here
@@ -267,7 +267,7 @@ def programlist(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer=ProgramSerializer(programs,many=True)
+        serializer=ProgramSerializer(programs,serializer1,many=True)
         return Response(serializer.data)
 
 @api_view(['GET'])
@@ -284,4 +284,19 @@ def programlistbyid(request,id):
 
     if request.method == 'GET':
         serializer=ProgramSerializer(programs,many=True)
+        return Response(serializer.data)    
+
+@api_view(['GET'])
+def reviewlist(request,slug):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        programs=Program.objects.get(slug=slug)
+        reviews=Review.objects.filter(program=programs)
+    except reviews.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer=ReviewSerializer(reviews,many=True)
         return Response(serializer.data)    
