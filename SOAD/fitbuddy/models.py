@@ -15,7 +15,7 @@ class Customer(models.Model):
         return self.user.username
 
 class FitnessCenter(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
     fitnesscenter_name = models.CharField(max_length=30)
     contact_number = models.CharField(max_length=10)
     email = models.EmailField(default = "")
