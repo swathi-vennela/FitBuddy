@@ -32,4 +32,5 @@ urlpatterns=[
     path('programs/',views.programlist,name='programs'),
     path('programs/<int:id>',views.programlistbyid,name='programs1'),
     path('add_hiring_role/<slug>',views.add_hiring_role, name='add_hiring_role'),
+    path('reviews/<slug>',views.reviewlist,name='reviews'),
 ]
