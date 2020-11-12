@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect, get_object_or_404, HttpResponseRed
 from django.contrib.auth import login,logout,authenticate
 from django.views.generic import CreateView
 from .models import User, Customer, FitnessCenter, Program, Review
-from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm, ReviewForm
+from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm, ReviewForm, HiringRoleForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -106,6 +106,24 @@ def add_program(request):
     else:
         form = ProgramForm()
     return render(request, 'fitbuddy/add_program.html',{"form":form})
+
+            
+@fitness_center_required
+def add_hiring_role(request,slug):
+    program = Program.objects.get(slug = slug)
+    if request.method == "POST" and request.user == program.fcenter.user:
+        form = HiringRoleForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.contact_email = program.fcenter.email
+            data.fprogram = program
+            data.slug = datetime.now().strftime("%c")
+            data.save()
+            return redirect("program_detail",slug)
+    else:
+        form = HiringRoleForm()
+    return render(request, 'fitbuddy/add_hiring_role.html',{"form":form})
 
 @fitness_center_required
 def edit_program(request, slug):    
