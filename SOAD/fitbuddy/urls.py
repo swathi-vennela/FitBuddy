@@ -32,5 +32,7 @@ urlpatterns=[
     path('programs/',views.programlist,name='programs'),
     path('programs/<int:id>',views.programlistbyid,name='programs1'),
     path('add_hiring_role/<slug>',views.add_hiring_role, name='add_hiring_role'),
+    path('list_hiring_roles/',views.list_hiring_roles, name='list_hiring_roles'),
+    path('job_detail/<slug>/',views.job_detail, name='job_detail'),
     path('reviews/<slug>',views.reviewlist,name='reviews'),
 ]
