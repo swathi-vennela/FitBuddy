@@ -56,7 +56,7 @@
                   <div class="card">
                           <div class="card-body">
                             <h5 class="card-title"> {{ object.title }}</h5>
-                            <a href="#">View Details</a>
+                            <a href="{{object.get_absolute_url}}">View Details</a>
                             <p class="card-text">{{ object.salary }}</p>
                             <span class="badge purple mr-1"> {{object.role}} </span>
                           </div>

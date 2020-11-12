@@ -123,6 +123,11 @@ class HiringRole(models.Model):
     def __str__(self):
         return self.title 
 
+    def get_absolute_url(self):
+        return reverse("job_detail", kwargs={
+            'slug' : self.slug
+        })
+
 
 class Review(models.Model):
     program = models.ForeignKey(Program, on_delete=models.CASCADE)

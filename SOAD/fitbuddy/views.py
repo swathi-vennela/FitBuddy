@@ -34,6 +34,7 @@ def profile_view(request):
 def view_programs(request):
     return render(request,'fitbuddy/program_list.html',context={'programs': Program.objects.all()})
 
+
 def program_detail(request, slug):
     program = Program.objects.get(slug=slug)
     reviews = Review.objects.filter(program=program).order_by("-comment")
@@ -127,6 +128,11 @@ def add_hiring_role(request,slug):
 
 def list_hiring_roles(request):
     return render(request, 'fitbuddy/hiring_list.html', context={'roles':HiringRole.objects.all()})
+
+def job_detail(request, slug):
+    job = HiringRole.objects.get(slug=slug)
+    return render(request, 'fitbuddy/job_detail.html', context={'job':job})
+
 
 @fitness_center_required
 def edit_program(request, slug):    
