@@ -10,7 +10,13 @@ from django.utils import timezone
 from datetime import datetime
 from fitbuddy.decorators import *
 from django.db.models import Q 
-from django.db.models import Avg
+from django.db.models import Avg, Count
+from django.http import HttpResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ProgramSerializer, ReviewSerializer
+from rest_framework.decorators import api_view
 
 # Create your views here
 def index_view(request):
@@ -39,13 +45,15 @@ def program_detail(request, slug):
     program = Program.objects.get(slug=slug)
     reviews = Review.objects.filter(program=program).order_by("-comment")
     average = reviews.aggregate(Avg("rating"))["rating__avg"]
+    count = reviews.count()
     if average == None:
         average = 0
     average = round(average, 2)
     context = {
         "program" : program,
         'reviews' : reviews,
-        "average": average
+        "average": average,
+        "count" : count
     }
     return render(request, 'fitbuddy/program_detail.html',context)
 
@@ -258,3 +266,48 @@ def delete_review(request, program_slug, review_slug):
             
     else:
         return redirect("login")
+
+@api_view(['GET'])
+def programlist(request):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        programs = Program.objects.all()
+    except programs.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer=ProgramSerializer(programs,serializer1,many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def programlistbyid(request,id):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        user=User.objects.get(id=id)
+        fcenters=FitnessCenter.objects.get(user=user)
+        programs=Program.objects.filter(fcenter=fcenters)
+    except programs.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer=ProgramSerializer(programs,many=True)
+        return Response(serializer.data)    
+
+@api_view(['GET'])
+def reviewlist(request,slug):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        programs=Program.objects.get(slug=slug)
+        reviews=Review.objects.filter(program=programs)
+    except reviews.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer=ReviewSerializer(reviews,many=True)
+        return Response(serializer.data)    
