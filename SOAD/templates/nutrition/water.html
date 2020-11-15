@@ -1,0 +1,39 @@
+{% extends 'nutrition/dashboard.html' %} {% block content %}
+<div class="container" style="margin: 75px; float: right">
+  <h1>Water Manager</h1>
+  <strong> Monitor your drinking water habits</strong>
+  <div style="margin-top: 40px">
+    <form action="{% url 'water' %}" method="POST">
+      {% csrf_token %}
+      <label for="water">Add your today's water in glasses</label>
+      <input type="number" name="water" id="water" />
+    </form>
+  </div>
+  {{ bmiData.water }}
+</div>
+<canvas id="myCanvas"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+  var ctx = document.getElementById("myChart").getContext("2d");
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: "line",
+
+    // The data for our dataset
+    data: {
+      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      datasets: [
+        {
+          label: "My First dataset",
+          backgroundColor: "rgb(255, 99, 132)",
+          borderColor: "rgb(255, 99, 132)",
+          data: [0, 10, 5, 2, 20, 30, 45],
+        },
+      ],
+    },
+
+    // Configuration options go here
+    options: {},
+  });
+</script>
+{% endblock %}

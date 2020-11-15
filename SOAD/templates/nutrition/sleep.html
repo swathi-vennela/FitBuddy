@@ -1,0 +1,15 @@
+{% extends 'nutrition/dashboard.html' %}
+{% block content %}
+<div class="container" style="margin: 75px; float: right;">
+    <h1>Sleep Manager</h1>
+    <strong>Monitor your sleep</strong>
+    <div style="margin-top: 40px;">
+        <form action="{% url 'sleep' %}" method="POST">
+            {% csrf_token %}
+            <label for="sleep">Add your today's sleep duration in hours</label>
+            <input type="number" name="sleep" id="sleep">
+        </form>
+    </div>
+    {{ bmiData.sleep }}
+</div>
+{% endblock %}
