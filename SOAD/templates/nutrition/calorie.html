@@ -1,27 +1,44 @@
 {% extends 'nutrition/dashboard.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="container" style="margin: 75px; float: right;">
-        <div class="container" style="margin: 35px; float: right;">
-            <div class="container">
-                <h4>Nutrition Analysis</h4>
+<div class="container" style="margin-left: 75px;margin-top: 40px;">
+    <h1>Calorie Manager</h1>
+    <h4>Personal Data Update</h4>
+    <div style="margin-top: 40px;">
+        <form action="{% url 'calorie' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="height"><strong>Height</strong></label>
+              <select name="heightUnit" id="height">
+                <option value="inch">in</option>
+                <option value="cm">cm</option>
+              </select>
+              <input name="height" type="height" class="form-control" id="height" placeholder="Enter your height">
             </div>
-            <div class="container">
-                We analyze your diet and provide you with a brief nutritional analysis.
-                Click to add food you have consumed today.
-                <br>
-                <br>
-                <form action="{% url 'analyzeNutrition' %}" method="post">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-primary">Know my nutrition</button>
-                </form>               
+            <div class="form-group">
+                <label for="weight"><strong>Weight</strong></label>
+                <select name="weightUnit" id="weight">
+                    <option value="kg">kg</option>
+                    <option value="lb">lb</option>
+                </select>
+                <input name="weight" type="weight" class="form-control" id="weight" placeholder="Enter your weight">
             </div>
-            <div class="container">
-                {{ data.calories }}
-                {{ data.totalNutrients }}
+            <div class="form-group">
+                <label for="gender"><strong>Gender</strong></label>
+                <select name="gender" id="gender">
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                </select>
             </div>
+            <div class="form-group">
+                <label for="age"><strong>Age</strong></label>
+                <input type="number" id="age" name="age" placeholder="Enter your age">
+            </div>
+            <button type="submit" class="btn btn-primary"">Submit</button>
+        </form>
+        <div style="margin-top: 40px;">
+            <strong>Your BMI is {{ bmiData.bmi }}.<br> You are {{ bmiData.category }}</strong>
         </div>
-    
-        </div>
+    </div>
+</div>       
 {% endblock %}

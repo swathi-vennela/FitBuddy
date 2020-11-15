@@ -10,6 +10,7 @@ class NutritionOfCustomer(models.Model):
     date = models.DateField(auto_now=date.today())
     calories = models.IntegerField(default=0)
     gender = models.CharField(default="Female",max_length=7)
+    age = models.IntegerField(default=19)
 
     def __str__(self):
         print(self.date)
