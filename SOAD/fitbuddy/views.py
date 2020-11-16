@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth import login,logout,authenticate
 from django.views.generic import CreateView
-from .models import User, Customer, FitnessCenter, Program, Review
+from .models import User, Customer, FitnessCenter, Program, Review, HiringRole
 from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm, ReviewForm, HiringRoleForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -15,8 +15,9 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ProgramSerializer, ReviewSerializer
+from .serializers import *
 from rest_framework.decorators import api_view
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here
 def index_view(request):
@@ -39,6 +40,7 @@ def profile_view(request):
 
 def view_programs(request):
     return render(request,'fitbuddy/program_list.html',context={'programs': Program.objects.all()})
+
 
 def program_detail(request, slug):
     program = Program.objects.get(slug=slug)
@@ -132,6 +134,24 @@ def add_hiring_role(request,slug):
     else:
         form = HiringRoleForm()
     return render(request, 'fitbuddy/add_hiring_role.html',{"form":form})
+
+def list_hiring_roles(request):
+    return render(request, 'fitbuddy/hiring_list.html', context={'roles':HiringRole.objects.all()})
+
+@api_view(http_method_names=['GET',])
+def hiring_list_api_get(request):
+    try:
+        data = HiringRole.objects.all()
+        serializer = HiringRoleSerializer(data,many=True)
+        return Response(data=serializer.data)
+    except ObjectDoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+def job_detail(request, slug):
+    job = HiringRole.objects.get(slug=slug)
+    return render(request, 'fitbuddy/job_detail.html', context={'job':job})
+
 
 @fitness_center_required
 def edit_program(request, slug):    

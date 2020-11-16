@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>Fitness Programs</title>    
+</head>
+<body>
+    <div class="wrapper row0">
+        <div id="topbar" class="hoc clear">
+          <div class="fl_left">
+            
+              <a href="/">Back to home</a>
+            
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+          <div  style="background-color: rgb(238, 149, 15);
+          width: 600px;
+          border: 15px;
+          padding: 10px;
+          margin: 50px;">
+                  <div class="card" >
+                          <div class="card-body">
+                            <h5 class="card-title"> {{ job.title }}</h5>
+                            <p><strong>Fitness Program:</strong> <a href="{{job.fprogram.get_absolute_url}}">{{ job.fprogram }}</a></p> 
+                            <p><strong>Role:</strong><br> {{ job.role }}</p>
+                            <p><strong>Eligibility:</strong> {{ job.qualifications }}</p>  
+                            <p><strong>Responsibilities:</strong> {{ job.responsibilities }}</p>
+                            <p class="card-text"><strong>Salary :</strong> Rs{{ job.salary }}</p>
+                            <p class="card-text"><strong>Gender :</strong> {{job.gender}}</p>
+                            <p class="card-text"><strong>Contact :</strong> {{job.contact_email}}</p>
+                          </div>
+                      <div class='card-footer text-center'>
+
+                      {% if request.user == program.fcenter.user %}
+                      <a href="#" class="btn btn-success">Edit details</a>
+                      {% else %}
+                      <a href="#" class="btn btn-success">Apply now</a>
+                      {% endif %}
+
+                      </div>
+                   </div>
+            </div>
+
+      </div>
+      <br>
+    </div>
+    <!-- <div  style="background-color: lightgrey;
+    width: 600px;
+    border: 15px;
+    padding: 50px;
+    margin: 50px;">
+        <div class="card-body">
+            <h5 class="card-title"> {{ job.title }}</h5>
+            <p><strong>Fitness Program:</strong> <a href="#">{{ job.fprogram }}</a></p> 
+            <p><strong>Role:</strong><br> {{ job.role }}</p>
+            <p><strong>Eligibility:</strong> {{ job.qualifications }}</p>  
+            <p><strong>Responsibilities:</strong> {{ job.responsibilities }}</p>
+            <p class="card-text"><strong>Salary :</strong> Rs{{ job.salary }}</p>
+            <p class="card-text"><strong>Gender :</strong> {{job.gender}}</p>
+            <p class="card-text"><strong>Contact :</strong> {{job.contact_email}}</p>
+        </div> -->
+</body>
+</html>
