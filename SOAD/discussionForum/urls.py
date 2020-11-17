@@ -11,7 +11,6 @@ urlpatterns = [
     path('viewAnswersOfQuestion/<qid>',viewAnswersOfQuestion,name='viewAnswers'),
     path('updateAnswer/<aid>',updateAnswer,name='updateAnswer'),
     path('deleteAnswer/<aid>',deleteAnswer,name='deleteAnswer'),
-    # path('addDiscussion/<topic>',addDiscussion,name='answerForum'),
-    # path('answers/<topic>',viewAnswers,name="viewAnswers"),
-    # path('dummy/',dummy,name="dummy")
+    path('api/questions',questionAPIView,name='apiQuestions'),
+    path('api/answers',answerAPIView,name='apiAnswers'),
 ]

@@ -2,9 +2,33 @@ from django.shortcuts import render, redirect
 from .forms import NutritionExtractionForm
 from django.contrib.auth.decorators import login_required
 import requests
+from decimal import *
+import json
+from django.views.generic import TemplateView
+from chartjs.views.lines import BaseLineChartView
 
-def getIdealCalorieIntake(request):
-    pass
+def getExpectedEnergyRequirement(activity,age,height,weight,gender):
+    if activity == "sedentary":
+        physicalActivityLevel = Decimal(1.00)
+    elif activity == "low active":
+        physicalActivityLevel = Decimal(1.40)
+    elif activity == "active":
+        physicalActivityLevel = Decimal(1.60)
+    else:
+        physicalActivityLevel = Decimal(1.90)
+    if gender == "female":
+        if age < 19:
+            result = Decimal(135.30) - (Decimal(30.80) * age) + physicalActivityLevel * ((Decimal(10.0) * weight) + (Decimal(934) * height)) + 25
+        else:
+            result = 354 - (Decimal(6.91) * age) + physicalActivityLevel * ((Decimal(9.36) * weight) + (726 * height))
+    else:
+        if age < 19:
+            result = Decimal(88.5) - (Decimal(61.9) * age) + physicalActivityLevel * ((Decimal(26.7) * weight) + (903 * height)) + 25
+        else:
+            result = 662 - (Decimal(9.53) * age) + physicalActivityLevel * ((Decimal(15.91) * weight) + (Decimal(539.6) * height))
+    return round(result,2)
+
+    # pass
 
 def getNutrition(json):
     app_id = "e7ce2d76"
@@ -68,21 +92,23 @@ def dashboardHome(request):
 
 @login_required
 def waterManager(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            try:
-                bmiData = {}
-                glassesOfWater = request.POST.get("water")
-                print(glassesOfWater)
-                request.user.customer.nutrition.waterIntake = glassesOfWater
-                request.user.customer.save()
-                print(request.user.customer.nutrition.waterIntake)
-                bmiData["water"] = glassesOfWater
-                return render(request,'nutrition/water.html',{'bmiData':bmiData})
-            except:
-                raise("The object is None")
-        else:
-            return render(request,'nutrition/water.html',{})
+    if request.method == 'POST':
+        try:
+            glassesOfWater = request.POST.get("water")
+            print(glassesOfWater)
+            request.user.customer.nutrition.waterIntake = glassesOfWater
+            request.user.customer.save()
+            print(request.user.customer.nutrition.waterIntake)
+            waterlist = []
+            for _ in request.user.customer.nutrition_set.all():
+                waterlist.append(_.waterIntake)
+            x = len(waterlist)
+            integers = [i for i in range(x)]
+            print(json.dumps(waterlist))
+            print(json.dumps(integers))
+            return render(request,'nutrition/water.html',{'water':json.dumps(waterlist),'labels': json.dumps(integers)})
+        except:
+            raise("The object is None")
     else:
         return render(request,'nutrition/water.html',{})
 
@@ -90,69 +116,72 @@ def waterManager(request):
 def calorieManager(request):
     if request.method == 'POST':
         bmiData = {}
-        height = int(request.POST.get("height"))
+        height = request.POST.get("height")
+        height = Decimal(height)
         heightUnit = request.POST.get("heightUnit")
-        print(height)
-        print(heightUnit)
-        weight = int(request.POST.get("weight"))
+        weight = request.POST.get("weight")
+        weight = Decimal(weight)
         weightUnit = request.POST.get("weightUnit")
-        print(weight)
-        print(weightUnit)
+        height = heightToMeters(height,heightUnit)
+        weight = weightToKgs(weight,weightUnit)
+        request.user.customer.nutrition.height = height
+        request.user.customer.nutrition.weight = weight
         bmi = calculateBMI(height,weight,heightUnit,weightUnit)
+        print("height is ")
+        print(height)
+        print("weight is ")
+        print(weight)
+        print("bmi is ")
+        print(bmi)
+        bmi = round(bmi,2)
+        print(bmi)
         category = findCategoryOfBMI(bmi)
-        print("This is the request")
-        print(request)
-        print("---")
-        print(request.user.customer)
+        print("category is ")
+        print(category)
         request.user.customer.nutrition.bmi = bmi
+        print("here?")
         request.user.customer.nutrition.save()
-        print("the bmi is ")
-        print(request.user.customer.nutrition.bmi)
+        print("I am here")
         gender = request.POST.get("gender")
+        print("Am i here")
         if gender != None:
             request.user.customer.nutrition.gender = gender
         if request.POST.get("age") != None:
             age = int(request.POST.get("age"))
             request.user.customer.nutrition.age = age
+        activity = request.POST.get("activity")
         bmiData["bmi"] = bmi
         bmiData["category"] = category
-        print(request.user.customer.nutrition.gender)
-        print(request.user.customer.nutrition.age)
         request.user.customer.nutrition.save()
+        calories = getExpectedEnergyRequirement(activity,age,height,weight,gender)
+        bmiData["calories"] = calories
         return render(request,'nutrition/calorie.html',{'bmiData':bmiData})
     else:
         return render(request,'nutrition/calorie.html',{})
 
 @login_required
 def sleepManager(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            try:
-                bmiData = {}
-                sleepDuration = request.POST["sleep"]
-                print(sleepDuration)
-                request.user.customer.nutrition.sleepDuration = sleepDuration
-                request.user.customer.save()
-                print(request.user.customer.nutrition.sleepDuration)
-                bmiData["sleep"] = sleepDuration
-                return render(request,'nutrition/sleep.html',{'bmiData':bmiData})
-            except:
-                raise("The object is None")
-        else:
-            return render(request,'nutrition/sleep.html',{})
+    if request.method == 'POST':
+        try:
+            bmiData = {}
+            sleepDuration = request.POST["sleep"]
+            print(sleepDuration)
+            request.user.customer.nutrition.sleepDuration = sleepDuration
+            request.user.customer.nutrition.save()
+            print(request.user.customer.nutrition.sleepDuration)
+            bmiData["sleep"] = sleepDuration
+            return render(request,'nutrition/sleep.html',{'bmiData':bmiData})
+        except:
+            raise("The object is None")
     else:
         return render(request,'nutrition/sleep.html',{})
 
 def calculateBMI(height,weight,heightUnit,weightUnit):
-    if heightUnit == 'cm':
-        height = height/100.0
-    elif heightUnit == 'inch':
-        height = height * 0.0254
-    if weightUnit == 'lb':
-        weight = weight * 0.453592
-    print(height)
-    print(weight)
-    return weight/(height*height)
+    result = weight/(height*height)
+    print(result)
+    result = Decimal(result)
+    print(result)
+    return result
 
 def findCategoryOfBMI(bmi):
     if bmi <= 18.5:
@@ -163,3 +192,36 @@ def findCategoryOfBMI(bmi):
         return "overweight"
     else:
         return "obese"
+
+def heightToMeters(height,heightUnit):
+    if heightUnit == 'cm':
+        height = height/Decimal(100.0)
+    elif heightUnit == 'inch':
+        height = height * Decimal(0.02)
+    print(height)
+    return Decimal(height)
+
+def weightToKgs(weight,weightUnit):
+    if weightUnit == 'lb':
+        weight = weight * Decimal(0.45)
+    return Decimal(weight)
+
+# class LineChartJSONView(BaseLineChartView):
+#     def get_labels(self):
+#         """Return 7 labels for the x-axis."""
+#         return ["January", "February", "March", "April", "May", "June", "July"]
+
+#     def get_providers(self):
+#         """Return names of datasets."""
+#         return ["Central", "Eastside", "Westside"]
+
+#     def get_data(self):
+#         """Return 3 datasets to plot."""
+
+#         return [[75, 44, 92, 11, 44, 95, 35],
+#                 [41, 92, 18, 3, 73, 87, 92],
+#                 [87, 21, 94, 3, 90, 13, 65]]
+
+
+# line_chart = TemplateView.as_view(template_name='line_chart.html')
+# line_chart_json = LineChartJSONView.as_view()

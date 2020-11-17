@@ -3,6 +3,9 @@ from .models import *
 from .forms import * 
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import *
  
 def forumView(request):
     questions = Question.objects.all()
@@ -65,7 +68,7 @@ def answerAQuestion(request,qid):
             return redirect('forum')
     else:
         form = AnswerForm()
-    context = {'form':form,'qid':qid}
+    context = {'form':form,'question':get_object_or_404(Question,pk=qid),'qid':qid}
     return render(request,"discussionForum/answerQuestion.html",context)
 
 def viewAnswersOfQuestion(request,qid):
@@ -89,7 +92,7 @@ def updateAnswer(request,aid):
             return redirect('viewAnswers',qid=qid)
     else:
         form = UpdateAnswerForm()
-    context = {'form':form,'aid':aid}
+    context = {'form':form,'aid':aid,"answer":get_object_or_404(Answer,pk=aid)}
     return render(request,"discussionForum/updateAnswer.html",context)
 
 @login_required
@@ -99,3 +102,25 @@ def deleteAnswer(request,aid):
     qid = answer.question.id
     print(qid)
     return redirect('viewAnswers',qid=qid)
+
+@api_view(['GET'])
+def questionAPIView(request):
+    if request.method == 'GET':
+        qs = Question.objects.all()
+        serializer = QuestionSerializer(qs,many=True)
+        print(serializer.data)
+        print(Response(serializer.data))
+        return Response(serializer.data)
+    else:
+        return redirect('forum')
+
+@api_view(['GET'])
+def answerAPIView(request):
+    if request.method == 'GET':
+        answerSet = Answer.objects.all()
+        serializer = AnswerSerializer(answerSet,many=True)
+        return Response(serializer.data)
+    else:
+        return redirect('forum')
+        
+    

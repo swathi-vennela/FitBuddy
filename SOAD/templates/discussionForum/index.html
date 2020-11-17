@@ -9,11 +9,10 @@
     <div class="my-3 p-3 bg-white rounded shadow-sm">
       <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
         <div class="container">
-          <h3>{{ques.question}}</h3>
-        <strong> By: {{ques.createdBy.username}}</strong>
-        <h4>On: {{ ques.date_created }}</h4>
+          <h4>{{ques.question}}</h4>
+        <h6><strong> By: {{ques.createdBy.username}}</strong><br>On: {{ ques.date_created }}</h6>
         <br>
-        {{ques.description}}
+        <h6>{{ques.description}}</h6>
         </div>
         <div class="container" style="margin-top: 10px;">
           <button class="btn btn-primary"><a href="{% url 'answerAQuestion' ques.pk %}" style="text-decoration: none;color: white;">Answer</a></button>

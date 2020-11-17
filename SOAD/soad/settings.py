@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'nutrition',
     'discussionForum',
+    'chartjs',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

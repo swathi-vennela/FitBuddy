@@ -1,5 +1,6 @@
 {% extends 'discussionForum/home.html' %}
 {% block content %}
+<h4>{{ answer.answer }}</h4>
 <form action="{% url 'updateAnswer' aid %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
