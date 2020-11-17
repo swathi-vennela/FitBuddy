@@ -1,0 +1,9 @@
+{% extends 'discussionForum/home.html' %}
+{% block content %}
+<h6>You can fill any one or both the fields.</h6>
+<form action="{% url 'updateQuestion' qid %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="btn btn-success" value="submit">
+</form>
+{% endblock %}

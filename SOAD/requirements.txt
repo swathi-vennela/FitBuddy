@@ -1,4 +1,7 @@
-Django
+django
 django-crispy-forms
 djangorestframework
 stripe
+requests
+pillow
+django-chartjs
