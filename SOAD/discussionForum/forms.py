@@ -1,12 +1,20 @@
-from django.forms import ModelForm
+from django import forms
 from .models import *
  
-class CreateInForum(ModelForm):
+class CreateQuestionForm(forms.ModelForm):
     class Meta:
-        model= Forum
-        fields = "__all__"
+        model = Question
+        fields = ['question','description']
+
+class UpdateQuestionForm(forms.Form):
+    question = forms.CharField(max_length=300,initial="",required=False)
+    description = forms.CharField(max_length=1000,initial="",required=False)
  
-class CreateInDiscussion(ModelForm):
+class AnswerForm(forms.ModelForm):
     class Meta:
-        model= Discussion
-        fields = ['discuss']
+        model = Answer
+        fields = ['answer']
+
+class UpdateAnswerForm(forms.Form):
+    answer = forms.CharField(max_length=1000)
+

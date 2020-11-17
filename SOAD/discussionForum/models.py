@@ -1,18 +1,21 @@
 from django.db import models
 from fitbuddy.models import User
 
-class Forum(models.Model):
+class Question(models.Model):
+    # Also add topic here
     createdBy = models.ForeignKey(User,on_delete=models.CASCADE)
-    topic= models.CharField(max_length=300)
+    date_created = models.DateTimeField(auto_now_add=True,blank=True)
+    question = models.CharField(max_length=300)
     description = models.CharField(max_length=1000,blank=True)
-    date_created=models.DateTimeField(auto_now_add=True,null=True)
-    
+
     def __str__(self):
-        return str(self.topic)
+        return str(self.question)
  
-class Discussion(models.Model):
-    forum = models.ForeignKey(Forum,on_delete=models.CASCADE,null=True,blank=True)
-    discuss = models.CharField(max_length=1000)
+class Answer(models.Model):
+    question = models.ForeignKey(Question,on_delete=models.CASCADE)
+    answer = models.CharField(max_length=1000)
+    answeredBy = models.ForeignKey(User,on_delete=models.CASCADE)
+    date_answered = models.DateTimeField(auto_now_add=True,blank=True)
  
     def __str__(self):
-        return str(self.forum)
+        return self.question.question + " has the answers as " + self.answer

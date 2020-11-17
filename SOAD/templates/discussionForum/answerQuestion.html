@@ -1,0 +1,8 @@
+{% extends 'discussionForum/home.html' %}
+{% block content %}
+<form action="{% url 'answerAQuestion' qid %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Answer</button>
+</form>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'nutrition/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container" style="margin: 75px; float: right;">
+    <div class="container" style="margin: 35px; float: right;">
+        <div class="container">
+            <h4>Nutrition Analysis</h4>
+        </div>
+        <div class="container">
+            We analyze your diet and provide you with a brief nutritional analysis.
+            Click to add food you have consumed today.
+            <br>
+            <br>
+            <form action="{% url 'analyzeNutrition' %}" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">Know my nutrition</button>
+            </form>               
+        </div>
+        <div class="container">
+            {{ data.calories }}
+            {{ data.totalNutrients }}
+        </div>
+    </div>
+
+    </div>
+{% endblock %}

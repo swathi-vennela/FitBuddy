@@ -20,6 +20,7 @@ def getNutrition(json):
     response = requests.post(url,params=payload,json=json,headers=headers)
     return response.json()
 
+@login_required
 def nutritionAnalyzer(request):
     context = {
         'form': None,
@@ -46,14 +47,16 @@ def nutritionAnalyzer(request):
     else:
         form = NutritionExtractionForm()
     context["form"] = form
-    return render(request,"nutrition/calorie.html",context)
+    return render(request,"nutrition/nutritionAnalysis.html",context)
 
+@login_required
 def dashboardHome(request):
     height = request.user.customer.nutrition.height
     weight = request.user.customer.nutrition.weight
     bmi = request.user.customer.nutrition.bmi
     gender = request.user.customer.nutrition.gender
     age = request.user.customer.nutrition.age
+    print(request.user.customer.nutrition)
     context = {
         "height": height,
         "weight": weight,
@@ -61,8 +64,9 @@ def dashboardHome(request):
         "gender": gender,
         "age": age
     }
-    return render(request,'nutrition/home.html',context)
+    return render(request,'nutrition/dashboard.html',context)
 
+@login_required
 def waterManager(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -82,44 +86,44 @@ def waterManager(request):
     else:
         return render(request,'nutrition/water.html',{})
 
+@login_required
 def calorieManager(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            bmiData = {}
-            height = int(request.POST.get("height"))
-            heightUnit = request.POST.get("heightUnit")
-            print(height)
-            print(heightUnit)
-            weight = int(request.POST.get("weight"))
-            weightUnit = request.POST.get("weightUnit")
-            print(weight)
-            print(weightUnit)
-            bmi = calculateBMI(height,weight,heightUnit,weightUnit)
-            category = findCategoryOfBMI(bmi)
-            print("This is the request")
-            print(request)
-            print("---")
-            print(request.user.customer)
-            request.user.customer.nutrition.bmi = bmi
-            request.user.customer.save()
-            print("the bmi is ")
-            print(request.user.customer.nutrition.bmi)
-            gender = request.POST.get("gender")
-            if gender != None:
-                request.user.customer.nutrition.gender = gender
-            if request.POST.get("age") != None:
-                age = int(request.POST.get("age"))
-                request.user.customer.nutrition.age = age
-            bmiData["bmi"] = bmi
-            bmiData["category"] = category
-            print(request.user.customer.nutrition.gender)
-            print(request.user.customer.nutrition.age)
-            return render(request,'nutrition/calorie.html',{'bmiData':bmiData})
-        else:
-            return render(request,'nutrition/calorie.html',{})
+    if request.method == 'POST':
+        bmiData = {}
+        height = int(request.POST.get("height"))
+        heightUnit = request.POST.get("heightUnit")
+        print(height)
+        print(heightUnit)
+        weight = int(request.POST.get("weight"))
+        weightUnit = request.POST.get("weightUnit")
+        print(weight)
+        print(weightUnit)
+        bmi = calculateBMI(height,weight,heightUnit,weightUnit)
+        category = findCategoryOfBMI(bmi)
+        print("This is the request")
+        print(request)
+        print("---")
+        print(request.user.customer)
+        request.user.customer.nutrition.bmi = bmi
+        request.user.customer.nutrition.save()
+        print("the bmi is ")
+        print(request.user.customer.nutrition.bmi)
+        gender = request.POST.get("gender")
+        if gender != None:
+            request.user.customer.nutrition.gender = gender
+        if request.POST.get("age") != None:
+            age = int(request.POST.get("age"))
+            request.user.customer.nutrition.age = age
+        bmiData["bmi"] = bmi
+        bmiData["category"] = category
+        print(request.user.customer.nutrition.gender)
+        print(request.user.customer.nutrition.age)
+        request.user.customer.nutrition.save()
+        return render(request,'nutrition/calorie.html',{'bmiData':bmiData})
     else:
         return render(request,'nutrition/calorie.html',{})
 
+@login_required
 def sleepManager(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -138,31 +142,6 @@ def sleepManager(request):
             return render(request,'nutrition/sleep.html',{})
     else:
         return render(request,'nutrition/sleep.html',{})
-
-# Create your views here.
-def nutrition(request):
-    # if request.user.is_authenticated:
-    #     if request.method == 'POST':
-    #         bmiData = {}
-    #         if "height" in request.POST and "weight" in request.POST:
-    #             
-    #         if "sleep" in request.POST:
-    #             
-    #         if "water" in request.POST:
-    #             glassesOfWater = request.POST["water"]
-    #             print(glassesOfWater)
-    #             request.user.customer.nutrition.waterIntake = glassesOfWater
-    #             request.user.customer.save()
-    #             print(request.user.customer.nutrition.waterIntake)
-    #             bmiData["water"] = glassesOfWater
-    #         return render(request,'nutrition/main.html',{'bmiData':bmiData})
-    #     else:
-    #         return render(request,'nutrition/main.html',{})
-    # else:
-    #     print(request.method)
-    #     print("NO, I am here")
-    #     return render(request,'nutrition/main.html',{})
-    return render(request,"nutrition/dashboard.html")
 
 def calculateBMI(height,weight,heightUnit,weightUnit):
     if heightUnit == 'cm':
