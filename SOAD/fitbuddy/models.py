@@ -51,7 +51,7 @@ class Program(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default=REGULAR,)
     number_of_sessions = models.IntegerField()
     hours_per_session = models.FloatField()
-    price = models.FloatField()
+    price = models.IntegerField()
     description = models.TextField()
     image = models.ImageField(default='default.jpg',upload_to = 'program_pics')
     slug = models.SlugField(unique=True)
@@ -79,6 +79,7 @@ class Program(models.Model):
         return reverse("delete_program", kwargs={
             'slug' : self.slug
         })
+
 
 class HiringRole(models.Model):
 
@@ -138,3 +139,11 @@ class Review(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class EnrolledPrograms(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    program = models.ForeignKey(Program, on_delete=models.CASCADE)
+    created =  models.DateTimeField(auto_now_add=True) 
+
+    def __str__(self):
+        return self.program.title

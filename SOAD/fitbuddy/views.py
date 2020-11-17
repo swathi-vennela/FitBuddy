@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth import login,logout,authenticate
 from django.views.generic import CreateView
-from .models import User, Customer, FitnessCenter, Program, Review, HiringRole
+from .models import User, Customer, FitnessCenter, Program, Review, HiringRole, EnrolledPrograms
 from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm, ReviewForm, HiringRoleForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -18,6 +18,9 @@ from rest_framework import status
 from .serializers import *
 from rest_framework.decorators import api_view
 from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse
+import stripe
+stripe.api_key = "sk_test_51H0rNqD5fba9rsNuuXZqKUJlFtWrvxVLV7PkZZKMM8nwB7AXnEHHid6pCBWZFztSVUp40634OT2R9rkDCJCA0uJY00hSmmEOsF"
 
 # Create your views here
 def index_view(request):
@@ -322,3 +325,37 @@ def reviewlist(request,slug):
     if request.method == 'GET':
         serializer=ReviewSerializer(reviews,many=True)
         return Response(serializer.data)    
+
+def payment(request,slug):
+	program = Program.objects.get(slug=slug)
+	context = {'program':program}
+	return render(request,'fitbuddy/payment.html',context)
+
+def charge(request,slug):
+    program = Program.objects.get(slug=slug)
+    amount=program.price
+    if request.method == 'POST':
+        print('Data:', request.POST)
+        customer = stripe.Customer.create(
+            email=request.POST['email'],
+            name=request.POST['name'],
+            source=request.POST['stripeToken']
+            )
+        charge = stripe.Charge.create(
+            customer=customer,
+            amount=amount*100,
+            currency='inr',
+            description="Fitbuddy payment"
+            )
+        EnrolledPrograms.objects.create(program=program,username=request.user)
+    return redirect(reverse('success'))
+
+def successMsg(request):
+	return render(request, 'fitbuddy/success.html')
+
+def myenrolledprograms(request):
+	programs = EnrolledPrograms.objects.filter(username=request.user)
+	context={
+		'programs' : programs
+	}
+	return render(request,'fitbuddy/my_programs.html',context)
