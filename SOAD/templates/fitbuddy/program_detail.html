@@ -43,7 +43,7 @@
                       <a href=" {{ program.get_add_hiring_role_url }} " class="btn btn-success">Hire staff</a>
                       <a href="{{ program.get_delete_program_url }}" class="btn btn-danger">Delete</a>
                       {% else %}
-                      <a href="#" class="btn btn-success">Enroll now</a>
+                      <a href="{% url 'payment' program.slug %}" class="btn btn-success">Enroll now</a>
                       {% endif %}
 
                       

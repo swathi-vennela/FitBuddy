@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>FitBuddy</title>    
+</head>
+<body>
+    
+      <div class="container">
+        <div class="row">
+          {% for object in programs %}
+          <div class="col-md-4 col-sm-4 col-lg-4 m-4">
+                  <div class="card">
+                    <img src="{{object.program.image.url}}" class="card-img-top" alt="{{ object.program.title }}" height="300" width="300">
+                          <div class="card-body">
+                            <h5 class="card-title"> {{ object.program.title }}</h5>
+                            <a href="{{object.program.get_absolute_url}}">View Details</a>
+                            <p class="card-text">{{ object.program.price }}</p>
+                            <span class="badge purple mr-1"> {{object.program.category}} </span>
+                          </div>
+                      <!-- <div class='card-footer text-center'>
+                      <a href="{{ object.get_add_to_cart_url }}" class="btn btn-success">Add to Cart</a>
+                      <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger">Remove from Cart</a>
+                      </div> -->
+                   </div>
+            </div>
+          {% endfor %}
+
+      </div>
+      </div>
+      </div>
+</body>
+</html>
