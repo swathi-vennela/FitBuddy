@@ -1,0 +1,15 @@
+{% extends 'nutrition/base.html' %} 
+{% block content %}
+<div class="container" style="margin: 75px; float: right">
+  <h1>Water Manager</h1>
+  <strong> Monitor your drinking water habits</strong>
+  <div style="margin-top: 40px">
+    <form action="{% url 'water' %}" method="POST">
+      {% csrf_token %}
+      <label for="water">Add your today's water in glasses</label>
+      <input type="number" name="water" id="water" />
+    </form>
+  </div>
+  {{ bmiData.water }}
+</div>
+{% endblock %}
