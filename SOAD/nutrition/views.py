@@ -3,9 +3,7 @@ from .forms import NutritionExtractionForm
 from django.contrib.auth.decorators import login_required
 import requests
 from decimal import *
-import json
-from django.views.generic import TemplateView
-from chartjs.views.lines import BaseLineChartView
+from django.http import JsonResponse
 
 def getExpectedEnergyRequirement(activity,age,height,weight,gender):
     if activity == "sedentary":
@@ -206,22 +204,34 @@ def weightToKgs(weight,weightUnit):
         weight = weight * Decimal(0.45)
     return Decimal(weight)
 
-# class LineChartJSONView(BaseLineChartView):
-#     def get_labels(self):
-#         """Return 7 labels for the x-axis."""
-#         return ["January", "February", "March", "April", "May", "June", "July"]
-
-#     def get_providers(self):
-#         """Return names of datasets."""
-#         return ["Central", "Eastside", "Westside"]
-
-#     def get_data(self):
-#         """Return 3 datasets to plot."""
-
-#         return [[75, 44, 92, 11, 44, 95, 35],
-#                 [41, 92, 18, 3, 73, 87, 92],
-#                 [87, 21, 94, 3, 90, 13, 65]]
-
-
-# line_chart = TemplateView.as_view(template_name='line_chart.html')
-# line_chart_json = LineChartJSONView.as_view()
+def show_chart(request,chartType):
+    if chartType == "water":
+        chartLabel = "Water consumption Analysis"
+        nutritionObjects = request.user.customer.nutrition_set.objects.all()
+        chartData = []
+        for obj in nutritionObjects:
+            chartData.append(obj.waterIntake)
+        length = len(chartData)
+        labels = range(length)
+    elif chartType == "sleep":
+        chartLabel = "Sleep consumption Analysis"
+        chartData = [0,10,2,34,90,78,100]
+        labels = [0,1,2,3,4,5,6]
+    elif chartType == "calorie":
+        chartLabel = "Calorie consumption Analysis"
+        chartData = [0,10,2,34,90,78,100]
+        labels = [0,1,2,3,4,5,6]
+    elif chartType == "nutrition":
+        chartLabel = "Nutrition consumption Analysis"
+        chartData = [0,10,2,34,90,78,100]
+        labels = [0,1,2,3,4,5,6]
+    else:
+        chartLabel = "Other Analysis"
+        chartData = [0,10,2,34,90,78,100]
+        labels = [0,1,2,3,4,5,6]
+    data = {
+        "labels": labels,
+        "chartData": chartData,
+        "chartLabel": chartLabel
+    }
+    return JsonResponse(data)

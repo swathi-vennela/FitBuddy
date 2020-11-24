@@ -7,6 +7,6 @@ urlpatterns = [
     path('sleep/',sleepManager,name="sleep"),
     path('calorie/',calorieManager,name="calorie"),
     path('nutritionAnalysis/',nutritionAnalyzer,name="analyzeNutrition"),
-    # path('chart', line_chart, name='line_chart'),
+    path('chart/<chartType>', show_chart, name='show_chart'),
     # path('chartJSON', line_chart_json, name='line_chart_json'),
 ]

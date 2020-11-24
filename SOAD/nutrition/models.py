@@ -1,7 +1,9 @@
 from django.db import models
 from datetime import date
+from fitbuddy.models import Customer
 
 class NutritionOfCustomer(models.Model):
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE,blank=True,null=True)
     height = models.DecimalField(max_digits=10,decimal_places=2,default=0.00)
     weight = models.DecimalField(max_digits=10,decimal_places=2,default=0.00)
     bmi = models.DecimalField(max_digits=10,decimal_places=2,default=0.00)

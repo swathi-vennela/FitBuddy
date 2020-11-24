@@ -5,7 +5,8 @@ from nutrition.models import NutritionOfCustomer
 
 @receiver(post_save,sender=Customer,dispatch_uid="nutrition_unique_id")
 def createNutritionObject(sender,**kwargs):
-    user = kwargs["instance"]
-    user.nutrition = NutritionOfCustomer.objects.create()
-    print(user.nutrition)
+    customer = kwargs["instance"]
+    nutritionObj = NutritionOfCustomer.objects.create(customer=customer)
+    nutritionObj.save()
+    print(nutritionObj)
     print("Object created")
