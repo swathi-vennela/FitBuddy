@@ -99,14 +99,14 @@ def waterManager(request):
             request.user.customer.nutrition.waterIntake = glassesOfWater
             request.user.customer.save()
             print(request.user.customer.nutrition.waterIntake)
-            waterlist = []
-            for _ in request.user.customer.nutrition_set.all():
-                waterlist.append(_.waterIntake)
-            x = len(waterlist)
-            integers = [i for i in range(x)]
-            print(json.dumps(waterlist))
-            print(json.dumps(integers))
-            return render(request,'nutrition/water.html',{'water':json.dumps(waterlist),'labels': json.dumps(integers)})
+            # waterlist = []
+            # for _ in request.user.customer.nutrition_set.all():
+            #     waterlist.append(_.waterIntake)
+            # x = len(waterlist)
+            # integers = [i for i in range(x)]
+            # print(json.dumps(waterlist))
+            # print(json.dumps(integers))
+            return render(request,'nutrition/water.html',{'water':glassesOfWater})
         except:
             raise("The object is None")
     else:
