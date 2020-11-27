@@ -13,4 +13,7 @@ urlpatterns = [
     path('deleteAnswer/<aid>',deleteAnswer,name='deleteAnswer'),
     path('api/questions',questionAPIView,name='apiQuestions'),
     path('api/answers',answerAPIView,name='apiAnswers'),
+    path('answer/<aid>/upvote',upvoteAnswer,name='upvote'),
+    path('answer/<aid>/downvote',downvoteAnswer,name='downvote'),
+    path('answer/<aid>/comment',commentAnswer,name='comment'),
 ]

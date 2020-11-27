@@ -18,3 +18,8 @@ class AnswerForm(forms.ModelForm):
 class UpdateAnswerForm(forms.Form):
     answer = forms.CharField(max_length=1000)
 
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['comment']
+

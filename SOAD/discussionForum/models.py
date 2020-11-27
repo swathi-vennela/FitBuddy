@@ -16,6 +16,15 @@ class Answer(models.Model):
     answer = models.CharField(max_length=1000)
     answeredBy = models.ForeignKey(User,on_delete=models.CASCADE)
     date_answered = models.DateTimeField(auto_now_add=True,blank=True)
- 
+    votes = models.IntegerField(default=0)
     def __str__(self):
         return self.question.question + " has the answers as " + self.answer
+
+class Comment(models.Model):
+    comment = models.TextField()
+    answer = models.ForeignKey(Answer,on_delete=models.CASCADE)
+    commentedBy = models.ForeignKey(User,on_delete=models.CASCADE)
+    date_commented = models.DateTimeField(auto_now_add=True,blank=True)
+    
+    def __str__(self):
+        return self.commentedBy.username+" commented "+self.comment

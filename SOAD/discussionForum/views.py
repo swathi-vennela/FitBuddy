@@ -122,5 +122,35 @@ def answerAPIView(request):
         return Response(serializer.data)
     else:
         return redirect('forum')
+
+@login_required
+def upvoteAnswer(request,aid):
+    answer = get_object_or_404(Answer,pk=aid)
+    answer.votes += 1
+    answer.save()
+    return render(request,"discussionForum/answers.html",{"answers":Answer.objects.all()})
+
+@login_required
+def downvoteAnswer(request,aid):
+    answer = get_object_or_404(Answer,pk=aid)
+    answer.votes -= 1
+    answer.save()
+    return render(request,"discussionForum/answers.html",{"answers":Answer.objects.all()})
+
+@login_required
+def commentAnswer(request,aid):
+    answer = get_object_or_404(Answer,pk=aid)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.cleaned_data["comment"]
+            commentObject = Comment.objects.create(comment=comment,commentedBy=request.user,answer=answer)
+            commentObject.save()
+        return render(request,"discussionForum/answers.html",{"answers":Answer.objects.all()})
+    else:
+        form = CommentForm()
+        context={"form":form,"answer":answer}
+        return render(request,"discussionForum/comment.html",context)
+
         
     
