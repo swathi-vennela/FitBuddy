@@ -16,4 +16,10 @@ urlpatterns = [
     path('answer/<aid>/upvote',upvoteAnswer,name='upvote'),
     path('answer/<aid>/downvote',downvoteAnswer,name='downvote'),
     path('answer/<aid>/comment',commentAnswer,name='comment'),
+    path('recentQuestions/',recentQuestions,name='recentQuestions'),
+    path('api/questions/recent',recentQuestionsAPIView,name='recentQuestionsAPI'),
+    path('sortAnswersByVotes/<qid>',sortAnswersByVotes,name='sortAnswersByVotes'),
+    path('api/answers/sortedVotes/<qid>',sortAnswersByVotesAPIView,name='sortAnswersByVotesAPI'),
+    path('answers/recent/<qid>',recentAnswers,name='recentAnswers'),
+    path('api/answers/recent/<qid>',recentAnswersAPIView,name='recentAnswersAPI'),
 ]

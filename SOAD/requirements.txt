@@ -5,3 +5,4 @@ stripe
 requests
 pillow
 django-chartjs
+django-hitcount
