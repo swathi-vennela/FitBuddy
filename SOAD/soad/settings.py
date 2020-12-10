@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'discussionForum',
     'chartjs',
     'hitcount',
+    'advertise',
 ]
 
 MIDDLEWARE = [
