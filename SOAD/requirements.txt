@@ -5,6 +5,5 @@ stripe
 requests
 pillow
 django-chartjs
-django-hitcount
 django-phonenumber-field
 phonenumbers

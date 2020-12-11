@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'nutrition',
     'discussionForum',
     'chartjs',
-    'hitcount',
     'advertise',
 ]
 

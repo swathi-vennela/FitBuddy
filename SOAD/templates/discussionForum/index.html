@@ -2,14 +2,14 @@
 {% block content %}
   <div class="my-3 p-3 bg-white rounded shadow-sm">
     <h3>Posts</h3>
-    <form action="{% url 'recentQuestions' %}" method="post">
+    <!-- <form action="{% url 'recentQuestions' %}" method="post">
       <div class="container" style="display: inline-block;">
         <label for="sort">Sort By</label>
         <select name="sortCategory" id="sort">
             <option value="recent">Recent</option>
         </select>
       </div>
-    </form>
+    </form> -->
     <button class="btn btn-primary" style="margin-top: 15px;"><a href="{% url 'addQuestion' %}" style="text-decoration: none;color: white;">Ask Question</a></button>
   </div>
   <div class="container p-0">

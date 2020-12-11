@@ -15,7 +15,6 @@ urlpatterns = [
     path('api/answers',answerAPIView,name='apiAnswers'),
     path('answer/<aid>/upvote',upvoteAnswer,name='upvote'),
     path('answer/<aid>/downvote',downvoteAnswer,name='downvote'),
-    path('answer/<aid>/comment',commentAnswer,name='comment'),
     path('recentQuestions/',recentQuestions,name='recentQuestions'),
     path('api/questions/recent',recentQuestionsAPIView,name='recentQuestionsAPI'),
     path('sortAnswersByVotes/<qid>',sortAnswersByVotes,name='sortAnswersByVotes'),

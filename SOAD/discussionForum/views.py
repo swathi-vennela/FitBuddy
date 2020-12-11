@@ -7,8 +7,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import *
 from django.views.generic.list import ListView
-from hitcount.views import HitCountMixin, HitCountDetailView
-from hitcount.models import HitCount
  
 def forumView(request):
     questions = Question.objects.all()
@@ -137,9 +135,6 @@ def upvoteAnswer(request,aid):
     answer.save()
     return render(request,"discussionForum/answers.html",{"answers":Answer.objects.all()})
 
-def upvoteAnswerAPIView(request,aid):
-    pass
-
 @login_required
 def downvoteAnswer(request,aid):
     answer = get_object_or_404(Answer,pk=aid)
@@ -147,21 +142,6 @@ def downvoteAnswer(request,aid):
         answer.votes -= 1
         answer.save()
     return render(request,"discussionForum/answers.html",{"answers":Answer.objects.all()})
-
-@login_required
-def commentAnswer(request,aid):
-    answer = get_object_or_404(Answer,pk=aid)
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.cleaned_data["comment"]
-            commentObject = Comment.objects.create(comment=comment,commentedBy=request.user,answer=answer)
-            commentObject.save()
-        return render(request,"discussionForum/answers.html",{"answers":Answer.objects.all()})
-    else:
-        form = CommentForm()
-        context={"form":form,"answer":answer}
-        return render(request,"discussionForum/comment.html",context)
 
 def recentQuestions(request):
     questions = Question.objects.all().order_by("-date_created")
