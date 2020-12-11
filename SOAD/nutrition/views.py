@@ -73,19 +73,23 @@ def nutritionAnalyzer(request):
 
 @login_required
 def dashboardHome(request):
-    height = request.user.customer.nutrition.height
-    weight = request.user.customer.nutrition.weight
-    bmi = request.user.customer.nutrition.bmi
-    gender = request.user.customer.nutrition.gender
-    age = request.user.customer.nutrition.age
-    print(request.user.customer.nutrition)
-    context = {
-        "height": height,
-        "weight": weight,
-        "bmi": bmi,
-        "gender": gender,
-        "age": age
-    }
+    customer = request.user.customer
+    print(customer)
+    print(customer.nutrition)
+    # height = request.user.customer.nutrition.height
+    # weight = request.user.customer.nutrition.weight
+    # bmi = request.user.customer.nutrition.bmi
+    # gender = request.user.customer.nutrition.gender
+    # age = request.user.customer.nutrition.age
+    # print(request.user.customer.nutrition)
+    # context = {
+    #     "height": height,
+    #     "weight": weight,
+    #     "bmi": bmi,
+    #     "gender": gender,
+    #     "age": age
+    # }
+    context = {}
     return render(request,'nutrition/dashboard.html',context)
 
 @login_required
@@ -174,37 +178,7 @@ def sleepManager(request):
     else:
         return render(request,'nutrition/sleep.html',{})
 
-def calculateBMI(height,weight,heightUnit,weightUnit):
-    result = weight/(height*height)
-    print(result)
-    result = Decimal(result)
-    print(result)
-    return result
-
-def findCategoryOfBMI(bmi):
-    if bmi <= 18.5:
-        return "underweight"
-    elif bmi <=24.9 and bmi >= 18.5:
-        return "normal weight"
-    elif bmi >= 25 and bmi <= 29.9:
-        return "overweight"
-    else:
-        return "obese"
-
-def heightToMeters(height,heightUnit):
-    if heightUnit == 'cm':
-        height = height/Decimal(100.0)
-    elif heightUnit == 'inch':
-        height = height * Decimal(0.02)
-    print(height)
-    return Decimal(height)
-
-def weightToKgs(weight,weightUnit):
-    if weightUnit == 'lb':
-        weight = weight * Decimal(0.45)
-    return Decimal(weight)
-
-def show_chart(request,chartType):
+def showChartView(request,chartType):
     if chartType == "water":
         chartLabel = "Water consumption Analysis"
         nutritionObjects = request.user.customer.nutrition_set.objects.all()
