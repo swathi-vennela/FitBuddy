@@ -5,13 +5,15 @@
   <div style="margin-top: 40px">
     <form action="{% url 'water' %}" method="POST">
       {% csrf_token %}
-      <label for="water">Add your today's water in glasses</label>
+      <label for="water">Add your water consumption in glasses</label>
       <input type="number" name="water" id="water" />
     </form>
   </div>
-  {{ bmiData.water }}
+  {% if water %}
+    {{ water }} glasses added
+  {% endif %}
   <div class="container">
-    <div class="col-md-6"> 
+    <div class="col-md-6" style="margin: 70px;"> 
       <canvas id="myChartline"></canvas> 
     </div>    
   </div>
