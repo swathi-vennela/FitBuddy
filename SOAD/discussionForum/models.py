@@ -7,6 +7,7 @@ class Question(models.Model):
     date_created = models.DateTimeField(auto_now_add=True,blank=True)
     question = models.CharField(max_length=300)
     description = models.CharField(max_length=1000,blank=True)
+    topic = models.CharField(max_length=30,blank=True)
 
     def __str__(self):
         return str(self.question)
@@ -16,6 +17,6 @@ class Answer(models.Model):
     answer = models.CharField(max_length=1000)
     answeredBy = models.ForeignKey(User,on_delete=models.CASCADE)
     date_answered = models.DateTimeField(auto_now_add=True,blank=True)
- 
+    votes = models.IntegerField(default=0)
     def __str__(self):
         return self.question.question + " has the answers as " + self.answer

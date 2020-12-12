@@ -25,14 +25,13 @@ SECRET_KEY = '$&%pk11x_27sn89rh1$zyrolnzer$qf^&g=ry9x=0-d1bke_(+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.0.2.2','127.0.0.1']
 
 AUTH_USER_MODEL='fitbuddy.User'
 # Application definition
 
 INSTALLED_APPS = [
     'fitbuddy.apps.FitbuddyConfig',
-    'advertise.apps.AdvertiseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +44,8 @@ INSTALLED_APPS = [
     'discussionForum',
     'chartjs',
     'equipment.apps.EquipmentConfig',
-    'bootstrap4',
+    # 'bootstrap4',
+    'advertise',
 ]
 
 MIDDLEWARE = [
