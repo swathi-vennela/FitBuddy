@@ -32,6 +32,7 @@ AUTH_USER_MODEL='fitbuddy.User'
 
 INSTALLED_APPS = [
     'fitbuddy.apps.FitbuddyConfig',
+    'advertise.apps.AdvertiseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
