@@ -25,7 +25,7 @@ Discussion Forum Section
 Fitness Center Section:
 
 - View list of programs - GET, Endpoint: /programs
-- View list of reviews
+- View list of reviews - GET
 
 Discussion Forum section:
 
@@ -51,16 +51,16 @@ flutter run
 
 Run the above command from fitpack folder to run the mock app locally. Before that you need Flutter and Android Studio installed
 
-'''
+```
 python manage.py makemigrations
-'''
+```
 
-'''
+```
 python manage.py migrate
-'''
-'''
+```
+```
 python manage.py runserver
-'''
+```
 
 If you find any migrations or db file initially, remove it and run the above commands to start the development server smoothly without any errors
 
