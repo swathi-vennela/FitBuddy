@@ -43,6 +43,29 @@ Equipment store/ Fitness product section
 
 - A Flutter app is developed for three endpoints of GET, POST on products, GET on programs endpoint
 
+### Guidelines for developers
+
+```
+flutter run
+```
+
+Run the above command from fitpack folder to run the mock app locally. Before that you need Flutter and Android Studio installed
+
+'''
+python manage.py makemigrations
+'''
+
+'''
+python manage.py migrate
+'''
+'''
+python manage.py runserver
+'''
+
+If you find any migrations or db file initially, remove it and run the above commands to start the development server smoothly without any errors
+
+#### If you are interested to contribute, feel free to raise an issue!
+
 #### Contributors
 
 - Swathi Kedharsetty
