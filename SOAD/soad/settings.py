@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'discussionForum',
     'chartjs',
     'equipment.apps.EquipmentConfig',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [

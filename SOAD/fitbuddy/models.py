@@ -12,6 +12,13 @@ class User(AbstractUser):
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     nutrition = models.ForeignKey(NutritionOfCustomer,on_delete=models.CASCADE,null=True,blank=True)
+    email = models.EmailField(default="")
+    customer_profile_pic = models.ImageField(default='img.png', upload_to='profile_pics', blank=True)
+    contact_number = models.CharField(max_length=10,default=532)
+
+    def get_absolute_url(self):
+        return reverse('/customer', kwargs={'pk': self.pk})
+
     def __str__(self):
         return self.user.username
 
@@ -20,6 +27,9 @@ class FitnessCenter(models.Model):
     fitnesscenter_name = models.CharField(max_length=30)
     contact_number = models.CharField(max_length=10)
     email = models.EmailField(default = "")
+    fitnesscenter_profile_pic = models.ImageField(default='img.png',upload_to = 'profile_pics',blank=True)
+    def get_absolute_url(self):
+        return reverse('/fitnesscenter',kwargs={'pk':self.pk})
 
 
     def __str__(self):
