@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
-from nutrition.models import NutritionOfCustomer
 
 # Create your models here.
 class User(AbstractUser):
@@ -11,7 +10,6 @@ class User(AbstractUser):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    nutrition = models.ForeignKey(NutritionOfCustomer,on_delete=models.CASCADE,null=True,blank=True)
     email = models.EmailField(default="")
     customer_profile_pic = models.ImageField(default='img.png', upload_to='profile_pics', blank=True)
     contact_number = models.CharField(max_length=10,default=532)

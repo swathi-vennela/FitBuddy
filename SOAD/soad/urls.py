@@ -25,6 +25,7 @@ urlpatterns = [
     path('',include('advertise.urls')),
     path('nutrition/', include("nutrition.urls")),
     path('discussion/',include("discussionForum.urls")),
+    path('ads/',include("advertise.urls")),
 ]
 
 if settings.DEBUG:

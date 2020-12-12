@@ -6,6 +6,7 @@ from datetime import datetime
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import *
+from django.views.generic.list import ListView
  
 def forumView(request):
     questions = Question.objects.all()
@@ -21,7 +22,8 @@ def addQuestion(request):
         if form.is_valid():
             question = form.cleaned_data["question"]
             description = form.cleaned_data["description"]
-            questionObject = Question.objects.create(createdBy=request.user,question=question,description=description)
+            topic = form.cleaned_data["topic"]
+            questionObject = Question.objects.create(createdBy=request.user,question=question,description=description,topic=topic)
             questionObject.save()
             print(questionObject)
             return redirect('forum')
@@ -75,6 +77,9 @@ def viewAnswersOfQuestion(request,qid):
     question = get_object_or_404(Question,pk=qid)
     answers = question.answer_set.all()
     context = {'answers':answers}
+    # view = HitCountDetailView.as_view(model=Question,count_hit=True)
+    # response = view(request,question.pk)
+    # context["views"] = response.context_data["hitcount"]["total_hits"]
     return render(request,"discussionForum/answers.html",context)      
 
 @login_required
@@ -122,5 +127,74 @@ def answerAPIView(request):
         return Response(serializer.data)
     else:
         return redirect('forum')
+
+@login_required
+def upvoteAnswer(request,aid):
+    answer = get_object_or_404(Answer,pk=aid)
+    answer.votes += 1
+    answer.save()
+    return render(request,"discussionForum/answers.html",{"answers":Answer.objects.all()})
+
+@login_required
+def downvoteAnswer(request,aid):
+    answer = get_object_or_404(Answer,pk=aid)
+    if answer.votes > 0:
+        answer.votes -= 1
+        answer.save()
+    return render(request,"discussionForum/answers.html",{"answers":Answer.objects.all()})
+
+def recentQuestions(request):
+    questions = Question.objects.all().order_by("-date_created")
+    context = {
+        "questions": questions
+    }
+    return render(request,"discussionForum/index.html",context)
+
+@api_view(['GET'])
+def recentQuestionsAPIView(request):
+    if request.method == 'GET':
+        sortedRecentSet = Question.objects.all().order_by("-date_created")
+        serializer = QuestionSerializer(sortedRecentSet,many=True)
+        return Response(serializer.data)
+    else:
+        return redirect('forum')
+
+def sortAnswersByVotes(request,qid):
+    question = get_object_or_404(Question,pk=qid)
+    answers = question.answer_set.all().order_by("-votes")
+    context = {}
+    context["answers"] = answers
+    return render(request,"discussionForum/answers.html",context)
+
+@api_view(['GET'])
+def sortAnswersByVotesAPIView(request,qid):
+    question = get_object_or_404(Question,pk=qid)
+    answers = question.answer_set.all().order_by("-votes")
+    if request.method == 'GET':
+        serializer = AnswerSerializer(answers,many=True)
+        return Response(serializer.data)
+    else:
+        return redirect('forum')
+
+def recentAnswers(request,qid):
+    question = get_object_or_404(Question,pk=qid)
+    answers = question.answer_set.all().order_by("-date_answered")
+    context = {}
+    context["answers"] = answers
+    return render(request,"discussionForum/answers.html",context)
+
+@api_view(['GET'])
+def recentAnswersAPIView(request,qid):
+    question = get_object_or_404(Question,pk=qid)
+    answers = question.answer_set.all().order_by("-date_answered")
+    if request.method == 'GET':
+        serializer = AnswerSerializer(answers,many=True)
+        return Response(serializer.data)
+    else:
+        return redirect('forum')        
+
+
+
+
         
     
