@@ -61,8 +61,8 @@ def fitnessequipment_detail_view_delete(request, slug, fequipment):
 
 def fitnessequipment_list_view_get(request):
     try:
-        data = Fitnessequipment.objects.all()
-        serializer = FitnessequipmentSerializer(data, many=True)
+        data = FitnessEquipment.objects.all()
+        serializer = FitnessEquipmentSerializer(data, many=True)
         return Response(data=serializer.data)
     except ObjectDoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -70,7 +70,7 @@ def fitnessequipment_list_view_get(request):
 
 def fitnessequipment_list_view_post(request):
     if request.method == 'POST':
-        serializer = FitnessequipmentSerializer(data=request.data)
+        serializer = FitnessEquipmentSerializer(data=request.data)
         print("to be validated")
         if serializer.is_valid():
             serializer.save(owner=request.user)
