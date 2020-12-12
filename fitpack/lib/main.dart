@@ -1,4 +1,5 @@
 import 'package:fitpack/screens/equipment_list.dart';
+import 'package:fitpack/screens/view_programs.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -51,19 +52,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -74,84 +63,56 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text("FitPack"),
+        title: Text("FitStore"),
+        backgroundColor: Colors.black,
       ),
-      body: Center(
+      body: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            RaisedButton(
+            Container(
+              // width: 200,
+              margin: EdgeInsets.all(8),
+              height: 150,
+              child: Card(
                 color: Colors.yellow,
-                onPressed: (){
-                  Navigator.push(context, 
-                    MaterialPageRoute(builder: (context)=>ProductListView()));
-                },
-                child: Text("Equipment List View"),
+                elevation: 7,
+                child: Column(
+                  children: [
+                    Text("Are you a store or client looking to sell fitness equipments or products?",style: TextStyle(fontSize: 20),),
+                    RaisedButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductListView()));
+                    },
+                    child: Text("Head Over Here!",style: TextStyle(color: Colors.white),),
+                    color: Colors.black
+                    )
+                  ],
+                )
+              )
             ),
-            RaisedButton(
+            Container(
+              // width: 200,
+              margin: EdgeInsets.all(8),
+              height: 150,
+              child: Card(
                 color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Equipment Detail View"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Store Profile"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Store Deals"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Store Stats"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Drawer"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Roles List View"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Roles Detail View"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Confirmation of application"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Drawer 2"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Trainer Profile"),
-            ),
-            RaisedButton(
-                color: Colors.yellow,
-                onPressed: (){},
-                child: Text("Applied jobs Screen"),
-            ),
+                elevation: 7,
+                child: Column(
+                  children: [
+                    Text("Are you a trainer or a trainee looking for fitness programs?",style: TextStyle(fontSize: 20),),
+                    RaisedButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ProgramsListView()));
+                    },
+                    child: Text("Head Over Here!",style: TextStyle(color: Colors.white),),
+                    color: Colors.black
+                    )
+                  ],
+                )
+              )
+            )
           ],
-        )
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

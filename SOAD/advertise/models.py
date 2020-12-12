@@ -6,7 +6,7 @@ from fitbuddy.models import *
 class FitnessProduct(models.Model):
     title = models.CharField(max_length=100, unique=True)
     description = models.TextField()
-    owner = models.ForeignKey(User,on_delete=models.CASCADE, default=None)
+    # owner = models.ForeignKey(User,on_delete=models.CASCADE, default=None)
     directions_to_use = models.TextField()
     composition = models.TextField()
     price = models.FloatField()

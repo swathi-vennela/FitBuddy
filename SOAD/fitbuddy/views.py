@@ -292,7 +292,7 @@ def programlist(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer=ProgramSerializer(programs,serializer1,many=True)
+        serializer=ProgramSerializer(programs,many=True)
         return Response(serializer.data)
 
 @api_view(['GET'])

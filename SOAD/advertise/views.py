@@ -13,7 +13,7 @@ from rest_framework import status
 from django.http import HttpResponse
 
 @api_view(http_method_names=['GET','POST',])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def fitnessproduct_list_view(request):
     if request.method == 'GET':
         return fitnessproduct_list_view_get(request)
@@ -21,7 +21,7 @@ def fitnessproduct_list_view(request):
         return fitnessproduct_list_view_post(request)
 
 @api_view(http_method_names=['GET','PUT','DELETE',])
-@permission_classes([IsAuthenticated, IsOwnerOrReadOnly])
+# @permission_classes([IsAuthenticated, IsOwnerOrReadOnly])
 def fitnessproduct_detail_view(request,slug):
     try:
         fproduct = FitnessProduct.objects.get(title=slug)
@@ -67,7 +67,7 @@ def fitnessproduct_list_view_post(request):
         serializer = FitnessProductSerializer(data=request.data)
         print("to be validated")
         if serializer.is_valid():
-            serializer.save(owner = request.user)
+            serializer.save()
             return Response(serializer.data)
         else:
             print("not valid")

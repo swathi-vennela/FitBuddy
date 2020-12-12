@@ -7,3 +7,6 @@ pillow
 django-chartjs
 django-phonenumber-field
 phonenumbers
+pytest
+pytest-django
+mixer
