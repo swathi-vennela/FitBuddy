@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('fitbuddy.urls')),
+    path('',include('advertise.urls')),
     path('nutrition/', include("nutrition.urls")),
     path('discussion/',include("discussionForum.urls")),
 ]
