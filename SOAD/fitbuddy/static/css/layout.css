@@ -316,6 +316,14 @@ input:focus, textarea:focus, *:required:focus{border-color:#56AED4;}
 
 .btn, .btn.inverse:hover{color:#FFFFFF; background-color:#F7A804; border-color:#F7A804;}
 .btn:hover, .btn.inverse{color:inherit; background-color:transparent; border-color:inherit;}
+.btn1 {
+  border: none;
+  background-color: inherit;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+}
 
 .logoname{color:#F7A804;}
 .logoname span{color:#0E74A5;}

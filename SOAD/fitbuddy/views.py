@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect, get_object_or_404, HttpResponseRed
 from django.contrib.auth import login,logout,authenticate
 from django.views.generic import CreateView
 from .models import User, Customer, FitnessCenter, Program, Review, HiringRole, EnrolledPrograms
-from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm, ReviewForm, HiringRoleForm
+from .forms import CustomerRegistrationForm,FitnessRegistrationForm, ProgramForm, ReviewForm, HiringRoleForm, CustomerProfileUpdateForm, FitnessCenterProfileUpdateForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -21,6 +21,28 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 import stripe
 stripe.api_key = "sk_test_51H0rNqD5fba9rsNuuXZqKUJlFtWrvxVLV7PkZZKMM8nwB7AXnEHHid6pCBWZFztSVUp40634OT2R9rkDCJCA0uJY00hSmmEOsF"
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import  DetailView
+from . import models
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'fitbuddy/change_password.html', {
+        'form': form
+    })
 
 # Create your views here
 def index_view(request):
@@ -66,6 +88,9 @@ class customer_register(CreateView):
     form_class = CustomerRegistrationForm
     template_name = 'fitbuddy/customer_register.html'
 
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'customer'
+        return super().get_context_data(**kwargs)
     def form_valid(self,form):
         user = form.save()
         login(self.request,user)
@@ -77,10 +102,62 @@ class fitness_register(CreateView):
     form_class = FitnessRegistrationForm
     template_name = 'fitbuddy/fitness_register.html'
 
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'fitnesscenter'
+        return super().get_context_data(**kwargs)
     def form_valid(self,form):
         user = form.save()
         login(self.request,user)
         return redirect('/')
+
+## User Profile of Customer.
+class CustomerDetailView(LoginRequiredMixin,DetailView):
+    context_object_name = "customer"
+    model = models.Customer
+    template_name = 'fitbuddy/customer_detail_page.html'
+
+## User Profile for Fitnesscenter.
+class FitnesscenterDetailView(LoginRequiredMixin,DetailView):
+    context_object_name = "fitnesscenter"
+    model = models.FitnessCenter
+    template_name = 'fitbuddy/fitnesscenter_detail_page.html'
+
+## Profile update for students.
+@login_required
+def CustomerUpdateView(request,pk):
+    profile_updated = False
+    customer = get_object_or_404(models.Customer,pk=pk)
+    if request.method == "POST":
+        form = CustomerProfileUpdateForm(request.POST,instance=customer)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            if 'customer_profile_pic' in request.FILES:
+                profile.customer_profile_pic = request.FILES['customer_profile_pic']
+            profile.save()
+            profile_updated = True
+        return redirect('/')
+    else:
+        form = CustomerProfileUpdateForm(request.POST or None,instance=customer)
+    return render(request,'fitbuddy/customer_update_page.html',{'profile_updated':profile_updated,'form':form})
+
+## Profile update for teachers.
+@login_required
+def FitnessCenterUpdateView(request,pk):
+    profile_updated = False
+    fitnesscenter = get_object_or_404(models.FitnessCenter,pk=pk)
+    if request.method == "POST":
+        form = FitnessCenterProfileUpdateForm(request.POST,instance=fitnesscenter)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            if 'fitnesscenter_profile_pic' in request.FILES:
+                profile.fitnesscenter_profile_pic = request.FILES['fitnesscenter_profile_pic']
+            profile.save()
+            profile_updated = True
+        return redirect('/')
+    else:
+        form = FitnessCenterProfileUpdateForm(request.POST or None,instance=fitnesscenter)
+    return render(request,'fitbuddy/fitnesscenter_update_page.html',{'profile_updated':profile_updated,'form':form})
+
 
 def login_view(request):
     if request.method=='POST':

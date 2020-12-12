@@ -15,6 +15,7 @@ class CustomerRegistrationForm(UserCreationForm):
         user.email=self.cleaned_data.get('email')
         user.save()
         customer = Customer.objects.create(user=user)
+        customer.email = self.cleaned_data.get('email')
         customer.save()
         return user
 
@@ -38,7 +39,17 @@ class FitnessRegistrationForm(UserCreationForm):
         fitnesscenter.email=self.cleaned_data.get('email')
         fitnesscenter.save()
         return user 
+## FitnessCenter Profile Update Form
+class FitnessCenterProfileUpdateForm(forms.ModelForm):
+    class Meta():
+        model = FitnessCenter
+        fields = ['fitnesscenter_name','email','contact_number','fitnesscenter_profile_pic']
 
+## Customer profile update form
+class CustomerProfileUpdateForm(forms.ModelForm):
+    class Meta():
+        model = Customer
+        fields = ['email','contact_number','customer_profile_pic']
 class HiringRoleForm(forms.ModelForm):
     class Meta:
         model = HiringRole
