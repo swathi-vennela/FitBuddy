@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'nutrition',
     'discussionForum',
     'chartjs',
+    'equipment.apps.EquipmentConfig',
 ]
 
 MIDDLEWARE = [
